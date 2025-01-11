@@ -29,7 +29,6 @@ router.post("/signin",signinMiddleware,async(req,res)=>{
         return validateUser.error;
     }
     const token = validateUser.token;
-    console.log(token)
     res.status(200).json({token:token})
 })
 

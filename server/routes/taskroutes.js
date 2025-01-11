@@ -32,7 +32,6 @@ router.post("/",authMiddleware,taskMiddeware,async(req,res)=>{
     const userId = req.user.userId;
 
     const newTask = await createTask({title,description,priority,subtasks,deadLine,userId});
-    console.log(newTask)
     if(!newTask.success){
         return res.status(400).json({error:"task creation failed!"})
     }

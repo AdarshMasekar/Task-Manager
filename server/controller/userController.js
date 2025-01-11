@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken")
 
 const createUser = async({firstName,lastName,email,password})=>{
     try{
-        console.log(SALT_ROUNDS)
         const hashedPassword = await bcrypt.hash(password,SALT_ROUNDS);
         await User.create({firstName,lastName,email,password:hashedPassword});
         return {
@@ -29,10 +28,7 @@ const validate = async(user,password) =>{
         const lastName = user.lastName;
         const email = user.email;
         const storedPassword = user.password;
-
-        console.log(storedPassword)
         const isValidCredentials = await bcrypt.compare(password,storedPassword)
-        console.log(isValidCredentials);
         if(!isValidCredentials){
             return {
                 "success":false,
@@ -58,7 +54,6 @@ const validate = async(user,password) =>{
 
 const verifyToken = (token) =>{
     const response =  jwt.verify(token,JWT_SECRET);
-    console.log(response)
     return response;
 }
 
