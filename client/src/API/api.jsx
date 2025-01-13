@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// Create a common api for all the apis 
+// Create a common api for all the apis
+const apiKey = import.meta.env.VITE_BACK_END_URL;
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_BACK_END_URL,
+  baseURL: apiKey,
   headers: {
     'Content-Type': 'application/json',
   }
@@ -13,7 +14,7 @@ apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },

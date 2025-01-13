@@ -28,8 +28,16 @@ router.post("/signin",signinMiddleware,async(req,res)=>{
     if(!validateUser.success){
         return validateUser.error;
     }
+    const userDetails = {
+        userId:req.user._id,
+        firstName:req.user.firstName,
+        lastName:req.user.lastName
+    }
     const token = validateUser.token;
-    res.status(200).json({token:token})
+    res.status(200).json({
+        token:token,
+        userDetails:userDetails
+    })
 })
 
 router.get("/",async(req,res)=>{

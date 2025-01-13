@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import apiClient from '../../API/api'
+import apiClient from '../api/api'
 
-// Async thunk for the user register 
+// Async thunk for the user register
 export const registerThunk = createAsyncThunk(
   'user/register',
   async (userCredentials, thunkAPI) => {
     try {
-      const response = await apiClient.post(`/user/singup`, userCredentials);
+        console.log(userCredentials)
+      const response = await apiClient.post('/user/signup', userCredentials);
       const data = await response.data;
       return data;
     } catch (err) {
@@ -14,12 +15,12 @@ export const registerThunk = createAsyncThunk(
     }
   });
 
-// Async thunk for the user login 
+// Async thunk for the user login
 export const loginThunk = createAsyncThunk(
   'user/login',
   async (userCredentials, thunkAPI) => {
     try {
-      const response = await apiClient.post('/user/singin', userCredentials);
+      const response = await apiClient.post('/user/signin', userCredentials);
       const data = await response.data;
       console.log("Login Data:", data); // Debug log
       return data;
@@ -67,11 +68,9 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
-        // Assuming the response contains user, jwtToken, and refreshToken
-        state.token = action.payload.jwtToken;
-        state.refreshToken = action.payload.refreshToken;
+        state.token = action.payload.token;
+        console.log(action.payload)
         localStorage.setItem('token', state.token);
-        localStorage.setItem('refreshToken', state.refreshToken);
         state.loading = false;
         state.error = null;
       })
