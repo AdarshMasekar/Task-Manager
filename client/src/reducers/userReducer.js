@@ -1,87 +1,84 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiClient from '../api/api'
 
-// Async thunk for the user register
-export const registerThunk = createAsyncThunk(
+// Async thunk for user registration
+export const registerUser = createAsyncThunk(
   'user/register',
-  async (userCredentials, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
-        console.log(userCredentials)
-      const response = await apiClient.post('/user/signup', userCredentials);
-      const data = await response.data;
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.error);
-    }
-  });
-
-// Async thunk for the user login
-export const loginThunk = createAsyncThunk(
-  'user/login',
-  async (userCredentials, thunkAPI) => {
-    try {
-      const response = await apiClient.post('/user/signin', userCredentials);
-      const data = await response.data;
-      console.log("Login Data:", data); // Debug log
-      return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.error);
+      const response = await apiClient.post('/user/signup', userData);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.error);
     }
   }
 );
 
-// Initial state for the user reducer
-const INITIAL_STATE = {
-  user: null,
-  token: localStorage.getItem('token') || null,
+// Async thunk for user login
+export const loginUser = createAsyncThunk(
+  'user/login',
+  async (userData, thunkAPI) => {
+    try {
+      const response = await apiClient.post('/user/signin', userData);
+      console.log("Login Data:", response.data); // Debug log
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.error);
+    }
+  }
+);
+
+// Initial state for the user slice
+const initialState = {
+  data: null,
+  authToken: localStorage.getItem('token') || null,
   loading: false,
   error: null,
 };
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: INITIAL_STATE,
+  initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
+    logoutUser: (state) => {
+      state.data = null;
+      state.authToken = null;
       state.loading = false;
       state.error = null;
       localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(registerThunk.pending, (state) => {
-      state.loading = true;
-    })
-      .addCase(registerThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(registerThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(loginThunk.pending, (state) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(loginThunk.fulfilled, (state, action) => {
-        state.token = action.payload.token;
-        console.log(action.payload)
-        localStorage.setItem('token', state.token);
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
       })
-      .addCase(loginThunk.rejected, (state, action) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.authToken = action.payload.token;
+        console.log(action.payload)
+        localStorage.setItem('token', state.authToken);
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   }
 });
 
-export const userActions = userSlice.actions;
-export const userSelector = (state) => state.user;
+export const { logoutUser } = userSlice.actions;
+export const selectUser = (state) => state.user;
 const userReducer = userSlice.reducer;
 export default userReducer;
