@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Navbar from './components/layout/Navbar'
 import Register from './pages/Register'
+import Sidebar from './components/layout/Sidebar'
 import Login from './pages/Login'
 
 function App() {
