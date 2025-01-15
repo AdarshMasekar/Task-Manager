@@ -21,6 +21,7 @@ import { FlagIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { logoutUser } from '../../store/reducers/userReducer';
 
 
 const Tasks = () => {
@@ -30,7 +31,7 @@ const Tasks = () => {
 
     useEffect(() => {
         dispatch(fetchTasks());
-    }, []);
+    }, [logoutUser]);
 
     const handleDelete = (taskId) => {
         dispatch(removeTaskAsync(taskId));
