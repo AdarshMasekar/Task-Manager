@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   tasks: [],
   task: null,
   loading: null,
-  error: null,
+  error: [],
 };
 
 export const fetchTasks = createAsyncThunk(
@@ -14,7 +14,6 @@ export const fetchTasks = createAsyncThunk(
     try {
       const response = await apiClient.get('/tasks');
       const data = await response.data;
-      console.log(data);
       return data;
     } catch (err) {
       console.log(err.response?.data || 'Error fetching task');
@@ -24,12 +23,14 @@ export const fetchTasks = createAsyncThunk(
 
 export const addTaskAsync = createAsyncThunk(
   'tasks/addTask',
-  async (task, { rejectWithValue }) => {
+  async (task,{rejectWithValue}) => {
     try {
       const response = await apiClient.post('/tasks', task);
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || 'Error adding task');
+
+        console.log(err.response.data)
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -41,7 +42,7 @@ export const removeTaskAsync = createAsyncThunk(
       await apiClient.delete(`/tasks/${taskId}`);
       return taskId;
     } catch (err) {
-      return rejectWithValue(err.response?.data || 'Error removing task');
+      return err.response?.data;
     }
   }
 );
@@ -71,10 +72,10 @@ const taskSlice = createSlice({
       })
       .addCase(addTaskAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks.push(action.payload);
       })
       .addCase(addTaskAsync.rejected, (state, action) => {
         state.loading = false;
+        console.log(action.payload)
         state.error = action.payload;
       });
 
@@ -114,7 +115,7 @@ const taskSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks = action.payload.tasks;
+        state.tasks = action.payload;
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
