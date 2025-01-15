@@ -6,11 +6,12 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (userData, thunkAPI) => {
     try {
-      console.log(userData)
-      const response = await apiClient.post('/user/signup', userData);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data?.error);
+      console.log(userCredentials)
+      const response = await apiClient.post('/user/signup', userCredentials);
+      const data = await response.data;
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.error);
     }
   }
 );
@@ -20,11 +21,11 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (userData, thunkAPI) => {
     try {
-      const response = await apiClient.post('/user/signin', userData);
-      console.log("Login Data:", response.data);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data?.error);
+      const response = await apiClient.post('/user/signin', userCredentials);
+      const data = await response.data;
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.error);
     }
   }
 );
@@ -65,10 +66,10 @@ const userSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.authToken = action.payload.token;
-        console.log(action.payload)
-        localStorage.setItem('token', state.authToken);
+      .addCase(loginThunk.fulfilled, (state, action) => {
+        state.user = action.payload.userDetails;
+        state.token = action.payload.token;
+        localStorage.setItem('token', state.token);
         state.loading = false;
         state.error = null;
       })
