@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // Create a common api for all the apis
-const apiKey = import.meta.env.VITE_BACK_END_URL;
+const baseUrl = import.meta.env.VITE_BACK_END_URL;
 const apiClient = axios.create({
-  baseURL: apiKey,
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
   }
