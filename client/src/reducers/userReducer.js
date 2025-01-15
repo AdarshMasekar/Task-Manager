@@ -6,7 +6,7 @@ export const registerThunk = createAsyncThunk(
   'user/register',
   async (userCredentials, thunkAPI) => {
     try {
-        console.log(userCredentials)
+      console.log(userCredentials)
       const response = await apiClient.post('/user/signup', userCredentials);
       const data = await response.data;
       return data;
@@ -22,7 +22,6 @@ export const loginThunk = createAsyncThunk(
     try {
       const response = await apiClient.post('/user/signin', userCredentials);
       const data = await response.data;
-      console.log("Login Data:", data); // Debug log
       return data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data?.error);
@@ -68,8 +67,8 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
+        state.user = action.payload.userDetails;
         state.token = action.payload.token;
-        console.log(action.payload)
         localStorage.setItem('token', state.token);
         state.loading = false;
         state.error = null;
