@@ -7,7 +7,7 @@ const signinMiddleware = async (req,res,next)=>{
 
     const isValidInput = signInValidator({email,password});
     if(!isValidInput.success){
-        return res.status(411).json({error:isValidInput.error.issues.map(issue => issue.message).join(" and ")});
+        return res.status(411).json(isValidInput.error.issues.map(issue => issue.message));
     }
 
     const userExists = await User.findOne({email:email});

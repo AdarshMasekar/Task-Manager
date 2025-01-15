@@ -9,7 +9,7 @@ const signupMiddleware = async(req,res,next)=>{
 
     const isValidInput = userValidator({firstName,lastName,email,password});
     if(!isValidInput.success){
-        res.status(411).json({error:isValidInput.error.issues.map(issue => issue.message).join(" and ")});
+        res.status(411).json(isValidInput.error.issues.map(issue => issue.message));
     }
 
     const userExists = await User.findOne({email:email});

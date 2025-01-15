@@ -64,10 +64,9 @@ const createTask = async({title,description,priority,subtasks,deadLine,userId}) 
     }
 }
 
-// still needs some work to be done
 const updateTask = async(taskId,updates) =>{
     try{
-        const updatedTask = await Task.findByIdAndUpdate(taskId,updates,{new:true})
+        await Task.findByIdAndUpdate(taskId,updates,{new:true})
         return {
             "success":true,
             updateTask:updateTask

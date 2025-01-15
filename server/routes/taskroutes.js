@@ -38,14 +38,20 @@ router.post("/", authMiddleware, taskMiddeware, async (req, res) => {
     res.status(201).json(newTask.task)
 })
 
-router.patch("/:taskId", authMiddleware, async (req, res) => {
+router.put("/:taskId", authMiddleware, taskMiddeware, async (req, res) => {
     const taskId = req.params.taskId;
-    const updates = req.body;
-    const updatedTask = await updateTask(taskId, updates);
-    if (!updatedTask.success) {
-        return res.status(400).json({ error: updatedTask.error })
+    const title = req.body.title;
+    const description = req.body.description;
+    const priority = req.body.priority;
+    const deadLine = req.body.deadLine;
+    const subtasks = req.body.subtasks;
+    const userId = req.user.userId;
+
+    const newTask = await updateTask(taskId,{ title, description, priority, subtasks, deadLine, userId });
+    if (!newTask.success) {
+        return res.status(400).json({ error: "task creation failed!" })
     }
-    res.status(201).json(updatedTask)
+    res.status(201).json(newTask.task)
 })
 
 router.delete("/:taskId", authMiddleware, async (req, res) => {
