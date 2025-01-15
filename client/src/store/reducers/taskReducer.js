@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import apiClient from '../api/api';
+import apiClient from '../../api/api';
 
 const INITIAL_STATE = {
   tasks: [],
@@ -48,16 +48,16 @@ export const removeTaskAsync = createAsyncThunk(
 );
 
 export const updateTaskAsync = createAsyncThunk(
-  'tasks/updateTask',
-  async (task, { rejectWithValue }) => {
-    try {
-      const response = await apiClient.put(`/tasks/${task.id}`, task); // Adjust endpoint as needed
-      return response.data; // Assuming response contains the updated task
-    } catch (err) {
-      return rejectWithValue(err.response?.data || 'Error updating task');
+    'tasks/updateTask',
+    async (task, { rejectWithValue }) => {
+      try {
+        const response = await apiClient.put(`/tasks/${task.id}`, task); // Adjust endpoint as needed
+        return response.data; // Assuming response contains the updated task
+      } catch (err) {
+        return rejectWithValue(err.response?.data || 'Error updating task');
+      }
     }
-  }
-);
+  );
 
 // Task Slice
 const taskSlice = createSlice({
@@ -72,10 +72,10 @@ const taskSlice = createSlice({
       })
       .addCase(addTaskAsync.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
       })
       .addCase(addTaskAsync.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload)
         state.error = action.payload;
       });
 
