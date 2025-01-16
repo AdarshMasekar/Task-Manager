@@ -10,7 +10,8 @@ export const registerUser = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.error);
+        console.log(err)
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );
@@ -22,9 +23,11 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await apiClient.post('/user/signin', userData);
       const data = await response.data;
+      console.log(data)
       return data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.error);
+        console.log(err)
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );
@@ -35,7 +38,7 @@ const initialState = {
   authToken: localStorage.getItem('token') || null,
   loading: false,
   isRegistered:false,
-  error: null,
+  error: [],
 };
 
 const userSlice = createSlice({
@@ -46,7 +49,7 @@ const userSlice = createSlice({
       state.data = null;
       state.authToken = null;
       state.loading = false;
-      state.error = null;
+      state.error = [];
       localStorage.removeItem('token');
     }
   },
@@ -62,12 +65,14 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
+        console.log(action.payload)
         state.error = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log(action.payload.userDetails)
         state.user = action.payload.userDetails;
         state.token = action.payload.token;
         localStorage.setItem('token', state.token);

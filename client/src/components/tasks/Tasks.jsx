@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { fetchTasks, taskSelector, removeTaskAsync } from '../../store/reducers/taskReducer';
-import { useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { fetchTasks, selectTasks, removeTaskAsync } from '../../store/reducers/taskReducer';
 import {
     Card,
     CardBody,
@@ -25,13 +24,13 @@ import { logoutUser } from '../../store/reducers/userReducer';
 
 
 const Tasks = () => {
-    const { tasks } = useSelector(taskSelector);
+    const { tasks } = useSelector(selectTasks);
     const dispatch = useDispatch();
     const notify = () => toast("task deleted successfully");
 
     useEffect(() => {
         dispatch(fetchTasks());
-    }, [logoutUser]);
+    }, []);
 
     const handleDelete = (taskId) => {
         dispatch(removeTaskAsync(taskId));
@@ -106,7 +105,7 @@ const Tasks = () => {
                                             <details>
                                                 < List className="mt-2">
                                                     {subtasks.map((stask) => (
-                                                        <ListItem key={stask._id} className="p-0 mb-1 flex justify-between items-center border-b dark:border-gray-700">
+                                                        <ListItem key={stask._id} className="p-0 mb-1 flex justify-between items-center">
                                                             <Typography color="gray" className="dark:text-gray-200 text-sm">
                                                                 {stask.title}
                                                             </Typography>

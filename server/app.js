@@ -19,20 +19,12 @@ app.get("/",(req,res)=>{
 
 app.use((err,req,res,next)=>{
     if (err) {
-        // Log the error
         console.error("Error occurred:", err.stack);
         // Check if it's a 404 or a general server error
-        if (err.status === 404) {
-            res.status(404).json({
-                success: false,
-                message: "Not Found"
-            });
-        } else {
-            res.status(500).json({
-                success: false,
-                message: "Internal Server Error"
-            });
-        }
+        res.status(err.statusCode || 500).json({
+            success: false,
+            message: err.message || "Internal Server Error"
+        });
     } else {
         next();
     }

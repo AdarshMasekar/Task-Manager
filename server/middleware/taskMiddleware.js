@@ -9,7 +9,10 @@ const taskMiddeware = (req,res,next) =>{
     const userId = req.user.userId;
     const isValidInput = taskValidator({title,description,priority,subtasks,deadLine,userId});
     if(!isValidInput.success){
-        return res.status(411).json(isValidInput.error.issues.map(issue => issue.message));
+        const error = new Error("Invalid input");
+        error.statusCode = 411;
+        error.message = isValidInput.error.issues.map(issue => issue.message);
+        return next(error);
     }
     next();
 }
