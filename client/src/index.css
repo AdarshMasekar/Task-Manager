@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: 240 10% 98%;
@@ -28,6 +29,8 @@
     --chart-4: 300 60% 50%;
     --chart-5: 10 80% 50%;
     --radius: 0.5rem;
+    --glass-bg: rgba(255, 255, 255, 0.1); /* Light mode glass background */
+    --glass-border: rgba(255, 255, 255, 0.2); /* Light mode glass border */
   }
   .dark {
     --background: 240 10% 10%;
@@ -54,8 +57,11 @@
     --chart-3: 40 80% 50%;
     --chart-4: 300 60% 50%;
     --chart-5: 10 80% 50%;
+    --glass-bg: rgba(20, 20, 20, 0.3); /* Dark mode glass background */
+    --glass-border: rgba(255, 255, 255, 0.1); /* Dark mode glass border */
   }
 }
+
 @layer base {
   * {
     @apply border-border;
@@ -63,4 +69,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  input,
+  textarea,
+  select {
+      @apply dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+}
+
+.glassmorphic {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

@@ -32,6 +32,40 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// Async thunk for updating user profile
+export const updateUserAsync = createAsyncThunk(
+    'user/update',
+    async (userData, thunkAPI) => {
+        try {
+            const response = await apiClient.put('/user/update', userData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to update profile.");
+        }
+    }
+);
+
+// Async thunk for changing user password
+export const changePasswordAsync = createAsyncThunk(
+    'user/changePassword',
+    async (passwords, thunkAPI) => {
+        try {
+            const response = await apiClient.put('/user/change-password', passwords, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            return response.data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to change password.");
+        }
+    }
+);
+
 // Initial state for the user slice
 const initialState = {
   data: null,
@@ -66,7 +100,7 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         console.log(action.payload)
-        state.error = action.payload;
+        state.error = [action.payload];
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -81,8 +115,31 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-      });
+        state.error = [action.payload];
+      })
+        .addCase(updateUserAsync.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(updateUserAsync.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload.updatedUser;
+            state.error = null;
+        })
+        .addCase(updateUserAsync.rejected, (state, action) => {
+            state.loading = false;
+            state.error = [action.payload];
+        })
+        .addCase(changePasswordAsync.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(changePasswordAsync.fulfilled, (state) => {
+            state.loading = false;
+            state.error = null;
+        })
+        .addCase(changePasswordAsync.rejected, (state, action) => {
+            state.loading = false;
+            state.error = [action.payload];
+        });
   }
 });
 

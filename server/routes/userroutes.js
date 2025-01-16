@@ -1,49 +1,53 @@
-const {Router} = require("express");
-const router = Router();
+const express = require("express");
+const { createUser, validate, updateUser, changePassword } = require("../controller/userController");
+const { validateUser, validateLogin, validatePasswordChange } = require("../utils/validation");
+const authMiddleware = require("../middleware/authMiddleware");
+const router = express.Router();
 const User = require("../model/User");
-const SALT_ROUNDS = require("../config/dotenv")
-const signupMiddleware = require("../middleware/signupMiddleware")
-const signinMiddleware = require("../middleware/signinMiddleware")
-const {createUser,validate} = require("../controller/userController")
+const signinMiddleware = require("../middleware/signinMiddleware");
+const signupMiddleware = require("../middleware/signupMiddleware");
 
-
-router.post("/signup",signupMiddleware,async(req,res)=>{
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const newUser = await createUser({firstName,lastName,email,password});
-    if(!newUser.success){
-        return res.status(400).json({error:"user creation failed!"})
+router.post("/signup", signupMiddleware, async (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
+    const response = await createUser({ firstName, lastName, email, password });
+    if (response.success) {
+        res.status(201).json(response);
+    } else {
+        res.status(400).json(response);
     }
-    res.status(201).json({msg:"user registered successfully!"})
-})
+});
 
-router.post("/signin",signinMiddleware,async(req,res)=>{
-    const password = req.body.password;
+router.post("/signin", signinMiddleware, async (req, res) => {
+    const { password } = req.body;
     const user = req.user;
-
-    const validateUser = await validate(user,password);
-    if(!validateUser.success){
-        return validateUser.error;
+    const response = await validate(user, password);
+    if (response.success) {
+        res.status(200).json({ "success": true, "token": response.token, "userDetails": user });
+    } else {
+        res.status(400).json(response);
     }
-    const userDetails = {
-        userId:req.user._id,
-        firstName:req.user.firstName,
-        lastName:req.user.lastName
+});
+
+router.put("/update", authMiddleware, async (req, res) => {
+    const userId = req.user.userId;
+    const updates = req.body;
+    const response = await updateUser(userId, updates);
+    if (response.success) {
+        res.status(200).json(response);
+    } else {
+        res.status(400).json(response);
     }
-    const token = validateUser.token;
-    res.status(200).json({
-        token:token,
-        userDetails:userDetails
-    })
-})
+});
 
-router.get("/",async(req,res)=>{
-    const users = await User.find();
-    res.json({users:users})
-})
-
+router.put("/change-password", authMiddleware, async (req, res) => {
+    const userId = req.user.userId;
+    const { currentPassword, newPassword } = req.body;
+    const response = await changePassword(userId, currentPassword, newPassword);
+    if (response.success) {
+        res.status(200).json(response);
+    } else {
+        res.status(400).json(response);
+    }
+});
 
 module.exports = router;

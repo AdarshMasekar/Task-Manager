@@ -30,21 +30,21 @@ const AddTask = () => {
     });
     const dispatch = useDispatch();
     const handleChange = (e) => {
-        if(!e || !e.target) return;
+        if (!e || !e.target) return;
         const { name, value } = e.target;
-        // Check if the date is in the past
-        if (name === "deadLine") {
-            const selectedDate = new Date(value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set today's time to 00:00:00 for accurate comparison
-            if (selectedDate < today) {
-                alert("Please select a future date or today.");
-                return;
-            }
-        }
+
         setTask((prevTask) => {
-            const updatedTask = { ...prevTask, [name]: value };
-            return updatedTask;
+            let updatedValue = value;
+            if (name === "deadLine") {
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (selectedDate < today) {
+                    alert("Please select a future date or today.");
+                    updatedValue = prevTask.deadLine;
+                }
+            }
+            return { ...prevTask, [name]: updatedValue };
         });
     };
 
@@ -78,8 +78,7 @@ const AddTask = () => {
 
     };
     return (
-        <Card className="max-w-2xl mx-auto mt-8 p-6 dark:bg-gray-800 dark:border-gray-700">
-            <CardBody>
+        <Card className="max-w-2xl mx-auto mt-8 p-6 dark:bg-gray-800 dark:border-gray-700 glassmorphic">   <CardBody>
                 <Typography variant="h4" color="blue-gray" className="text-center mb-6 dark:text-white">Add Task</Typography>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="space-y-2">

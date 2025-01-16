@@ -34,8 +34,7 @@ export default function Register() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900">
-            <Card className="bg-white dark:bg-gray-800 p-8 shadow-md w-96 rounded-2xl">
-                <CardBody>
+               <Card className="bg-white dark:bg-gray-800 p-8 shadow-md w-96 rounded-2xl glassmorphic">   <CardBody>
                     <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">Register</Typography>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input

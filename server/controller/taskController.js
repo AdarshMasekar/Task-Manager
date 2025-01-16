@@ -66,10 +66,10 @@ const createTask = async({title,description,priority,subtasks,deadLine,userId}) 
 
 const updateTask = async(taskId,updates) =>{
     try{
-        await Task.findByIdAndUpdate(taskId,updates,{new:true})
+        const updatedTask = await Task.findByIdAndUpdate(taskId,updates,{new:true})
         return {
             "success":true,
-            updateTask:updateTask
+            updateTask:updatedTask
         };
     }catch(error){
         return {

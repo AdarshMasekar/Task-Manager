@@ -51,15 +51,54 @@ const validate = async(user,password) =>{
 
 }
 
+const updateUser = async (userId, updates) => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true });
+        return {
+            success: true,
+            updatedUser
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: "Failed to update user profile: " + error.message
+        };
+    }
+};
 
-const verifyToken = (token) =>{
-    const response =  jwt.verify(token,JWT_SECRET);
-    return response;
-}
+const changePassword = async (userId, currentPassword, newPassword) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return { success: false, error: "User not found." };
+        }
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return { success: false, error: "Invalid current password." };
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+        user.password = hashedPassword;
+        await user.save();
+        return { success: true, message: "Password changed successfully." };
+    } catch (error) {
+        return { success: false, error: "Failed to change password: " + error.message };
+    }
+};
 
+const verifyToken = (token) => {
+    try {
+        const actualToken = token.split(" ")[1];
+        const decoded = jwt.verify(actualToken, JWT_SECRET);
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+};
 
 module.exports = {
     createUser,
     validate,
+    updateUser,
+    changePassword,
     verifyToken
 }

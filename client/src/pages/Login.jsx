@@ -33,8 +33,7 @@ export default function Login() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900">
-            <Card className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md w-96">
-                <CardBody>
+               <Card className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md w-96 glassmorphic">   <CardBody>
                     <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">Login</Typography>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input

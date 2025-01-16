@@ -41,16 +41,20 @@ const EditTask = () => {
     const handleChange = (e) => {
         if (!e || !e.target) return;
         const { name, value } = e.target;
-        if (name === "deadLine") {
-            const selectedDate = new Date(value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            if (selectedDate < today) {
-                alert("Please select a future date or today.");
-                return;
+
+        setTask((prevTask) => {
+            let updatedValue = value;
+            if (name === "deadLine") {
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (selectedDate < today) {
+                    alert("Please select a future date or today.");
+                    updatedValue = prevTask.deadLine;
+                }
             }
-        }
-        setTask((prevTask) => ({ ...prevTask, [name]: value }));
+            return { ...prevTask, [name]: updatedValue };
+        });
     };
     const handleSubtaskChange = (index, field, value) => {
         const updatedSubtasks = [...task.subtasks];
@@ -72,13 +76,13 @@ const EditTask = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(task)
         dispatch(updateTaskAsync({ taskId, updates: task }));
         navigate("/");
     };
 
     return (
-        <Card className="max-w-2xl mx-auto mt-8 p-6 dark:bg-gray-800 dark:border-gray-700">
-            <CardBody>
+        <Card className="max-w-2xl mx-auto mt-8 p-6 dark:bg-gray-800 dark:border-gray-700 glassmorphic">    <CardBody>
                 <Typography variant="h4" color="blue-gray" className="text-center mb-6 dark:text-white">Edit Task</Typography>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="space-y-2">
@@ -130,16 +134,14 @@ const EditTask = () => {
                                     color="blue"
                                     className="flex-1 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     value={subtask.title}
-                                    onChange={(e) =>
-                                        handleSubtaskChange(index, "title", e.target.value)
-                                    }
+                                    onChange={(value) => handleSubtaskChange(index, 'title', value)}
                                     required
                                 />
                                 <Select
                                     color="blue"
                                     className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                                     value={subtask.status}
-                                    onChange={handleChange}
+                                    onChange={(value) => handleSubtaskChange(index, 'status', value)}
                                 >
                                     <Option value="Pending">Pending</Option>
                                     <Option value="Completed">Completed</Option>
