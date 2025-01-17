@@ -23,7 +23,6 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await apiClient.post('/user/signin', userData);
       const data = await response.data;
-      console.log(data)
       return data;
     } catch (err) {
         console.log(err)
@@ -68,7 +67,7 @@ export const changePasswordAsync = createAsyncThunk(
 
 // Initial state for the user slice
 const initialState = {
-  data: null,
+  data:JSON.parse(localStorage.getItem("userDetails")) || null,
   authToken: localStorage.getItem('token') || null,
   loading: false,
   isRegistered:false,
@@ -106,10 +105,11 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log(action.payload.userDetails)
-        state.user = action.payload.userDetails;
-        state.token = action.payload.token;
-        localStorage.setItem('token', state.token);
+        state.data = action.payload.userDetails;
+        console.log(state.data)
+        state.authToken = action.payload.token;
+        localStorage.setItem('userDetails',JSON.stringify(state.data))
+        localStorage.setItem('token', state.authToken);
         state.loading = false;
         state.error = null;
       })
@@ -122,7 +122,9 @@ const userSlice = createSlice({
         })
         .addCase(updateUserAsync.fulfilled, (state, action) => {
             state.loading = false;
-            state.user = action.payload.updatedUser;
+            state.data = action.payload.updatedUser;
+            localStorage.setItem('userDetails',JSON.stringify(state.data))
+            localStorage.setItem('token', state.authToken);
             state.error = null;
         })
         .addCase(updateUserAsync.rejected, (state, action) => {
