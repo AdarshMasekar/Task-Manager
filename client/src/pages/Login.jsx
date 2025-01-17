@@ -9,6 +9,7 @@ import {
     Input,
     Button,
 } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 
 export default function Login() {
 
@@ -42,7 +43,7 @@ export default function Login() {
                             color="blue"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                             className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Input
                             type='password'
@@ -50,17 +51,20 @@ export default function Login() {
                             color="blue"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                             className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Button type="submit" color="blue" className="w-full">Login</Button>
                     </form>
+                    <p className='text-primary mt-4 text-center'>
+                            Dont have an Account? <Link to="/signup" className='underline'>Register</Link>
+                    </p>
+                </CardBody>
                     {error && Array.isArray(error) && error.map((err, index) => {
-                        return <Typography key={index} variant="small" color="red">{err}</Typography>
+                        return <Typography key={index} variant="h6" color="red" className='text-center'>{err}</Typography>
                     })}
                      {error && typeof error === 'string' && (
-                        <Typography variant="small" color="red">{error}</Typography>
+                        <Typography variant="h6" color="red" className='text-center'>{error}</Typography>
                     )}
-                </CardBody>
             </Card>
         </div>
     )
