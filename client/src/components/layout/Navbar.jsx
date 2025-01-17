@@ -22,53 +22,66 @@ export default function Navbar() {
     };
 
     return (
-        <MTNavbar className="bg-gray-800 dark:bg-gray-900 p-4 container mx-auto flex justify-between items-center glassmorphic">
-              <Typography variant="h6" color="white" className="dark:text-white">
-                <Link to="/" className="hover:text-blue-500">task manager</Link>
+        <MTNavbar className="p-4 mx-auto flex justify-between items-center text-primary glassmorphic dark:glassmorphic mt-5 sticky top-5 z-50">
+              <Typography variant="h6" className="text-primary dark:text-white">
+                <Link to="/" className="hover:text-blue-500">Task Manager</Link>
             </Typography>
             <div className="space-x-4 flex items-center">
-                {user.authToken ? (
+                {user?.authToken ? (
                     <>
-                        <Typography variant="small" color="white" className="dark:text-gray-300">
-                            {user?.user?.firstName} {user?.user?.lastName}
+                        <Typography variant="h6" className="dark:text-gray-300">
+                            {user?.data?.firstName} {user?.data?.lastName}
                         </Typography>
                         <Link to="/profile">
                             <Button
                                 variant="text"
-                                color="white"
-                                className="dark:text-gray-300"
+                                className="dark:text-gray-300 p-1"
                             >
                                 Profile
                             </Button>
                         </Link>
                         <Button
                             variant="text"
-                            color="white"
                             onClick={handleLogout}
-                            className="dark:text-gray-300"
+                            className="dark:text-gray-300 p-1"
                         >
                             Logout
                         </Button>
                     </>
                 ) : (
                     <>
-                        <Typography variant="small" color="white" className="dark:text-gray-300">
-                            <Link to="/signup" className="hover:text-blue-500">register</Link>
+                        <Typography variant="small" className="dark:text-gray-300">
+                            <Link to="/signup" className="hover:text-blue-500">
+                                <Button
+                                    variant="text"
+                                    className="dark:text-gray-300 p-2"
+                                >
+                                    Register
+                                </Button>
+                            </Link>
                         </Typography>
-                        <Typography variant="small" color="white" className="dark:text-gray-300">
-                            <Link to="/signin" className="hover:text-blue-500">login</Link>
+                        <Typography variant="small" className="dark:text-gray-300">
+                            <Link to="/signin" className="hover:text-blue-500">
+                                <Button
+                                    variant="text"
+                                    className="dark:text-gray-300 p-2"
+                                >
+                                    Login
+                                </Button>
+                            </Link>
                         </Typography>
                     </>
                 )}
                 <Button
-                    variant="text"
-                    color="white"
+                    variant="filled"
                     onClick={toggleTheme}
-                    className="dark:text-gray-300"
+                    className="dark:text-gray-300 rounded-full p-1"
                 >
                     {theme === 'light' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
                 </Button>
+
             </div>
+
         </MTNavbar>
     );
 }
