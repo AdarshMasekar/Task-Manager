@@ -22,7 +22,17 @@ router.post("/signin", signinMiddleware, async (req, res) => {
     const user = req.user;
     const response = await validate(user, password);
     if (response.success) {
-        res.status(200).json({ "success": true, "token": response.token, "userDetails": user });
+        res.status(200).json(
+            {
+             "token": response.token,
+             "userDetails": {
+                firstName:user.firstName,
+                lastName : user.lastName,
+                email : user.email,
+                id: user._id
+             }
+            }
+        );
     } else {
         res.status(400).json(response);
     }
