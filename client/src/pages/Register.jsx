@@ -9,6 +9,7 @@ import {
     Input,
     Button,
 } from "@material-tailwind/react";
+import { Link } from 'react-router-dom';
 
 export default function Register() {
 
@@ -34,7 +35,8 @@ export default function Register() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900">
-               <Card className="bg-white dark:bg-gray-800 p-8 shadow-md w-96 rounded-2xl glassmorphic">   <CardBody>
+               <Card className="bg-white dark:bg-secondary p-8 shadow-md w-96 rounded-2xl glassmorphic">
+                <CardBody className='-my-5'>
                     <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">Register</Typography>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <Input
@@ -43,7 +45,7 @@ export default function Register() {
                             color="blue"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                            className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Input
                             type='text'
@@ -51,7 +53,7 @@ export default function Register() {
                             color="blue"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                            className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Input
                             type='email'
@@ -59,7 +61,7 @@ export default function Register() {
                             color="blue"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                            className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Input
                             type='password'
@@ -67,16 +69,21 @@ export default function Register() {
                             color="blue"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
+                            className="dark:bg-gray-700  dark:bg-primary"
                         />
                         <Button type="submit" color="blue" className="mt-4 w-full">Register</Button>
                     </form>
+                    <p className='text-primary mt-4 text-center'>
+                        Aleady have an Account? <Link to="/signin" className='underline'>Log In</Link>
+                    </p>
 
                     {error && Array.isArray(error) && error.map((err, index) => {
-                        return <Typography key={index} variant="small" color="red">{err}</Typography>
+                        return <Typography key={index} variant="h6" color="red" className='text-center w-full'> * {err}
+                            <br />
+                        </Typography>
                     })}
                      {error && typeof error === 'string' && (
-                        <Typography variant="small" color="red">{error}</Typography>
+                        <Typography variant="h6" color="red" className='text-center'>* {error}</Typography>
                     )}
                 </CardBody>
             </Card>
