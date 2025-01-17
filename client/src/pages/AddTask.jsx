@@ -110,7 +110,9 @@ const AddTask = () => {
                             color="blue"
                             className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             value={task.priority}
-                            onChange={handleChange}
+                            onChange={(value) =>
+                                setTask((prevTask) => ({ ...prevTask, priority: value }))
+                            }
                         >
                             <Option value="Low">Low</Option>
                             <Option value="Medium">Medium</Option>
