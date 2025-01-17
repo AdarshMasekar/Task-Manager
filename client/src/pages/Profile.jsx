@@ -13,11 +13,11 @@ import {
 const Profile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, error, authToken } = useSelector(selectUser);
+    const user = useSelector(selectUser);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState(user.data.firstName);
+    const [lastName, setLastName] = useState(user.data.lastName);
+    const [email, setEmail] = useState(user.data.email);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,10 +32,6 @@ const Profile = () => {
         }
     }, [user]);
 
-    if (!authToken) {
-        navigate("/signin");
-        return null;
-    }
     const handleUpdateProfile = (e) => {
         e.preventDefault();
         setUpdateError(null);
@@ -79,8 +75,8 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900">
-            <Card className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md w-96">
+        <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-900 mt-4">
+            <Card className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md w-[90%]">
                 <CardBody>
                     <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">
                         Profile
@@ -118,12 +114,12 @@ const Profile = () => {
                                 {updateError}
                             </Typography>
                         )}
-                        {error && Array.isArray(error) && error.map((err, index) => {
+                        {/* {error && Array.isArray(error) && error.map((err, index) => {
                             return <Typography key={index} variant="small" color="red">{err}</Typography>
                         })}
                         {error && typeof error === 'string' && (
                             <Typography variant="small" color="red">{error}</Typography>
-                        )}
+                        )} */}
                     </form>
                     <div className="mt-8">
                         <Typography variant="h6" color="blue-gray" className="mb-4 text-center dark:text-white">
