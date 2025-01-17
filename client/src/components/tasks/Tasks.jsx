@@ -38,7 +38,7 @@ const Tasks = () => {
 
 
     return (
-        <div className="container mx-auto mt-8 p-4">
+        <div className="container mx-auto px-3 py-1">
             {tasks && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tasks.map(({ _id, title, description, priority, subtasks, deadLine }) => {
@@ -46,8 +46,7 @@ const Tasks = () => {
                         const totalSubtasks = subtasks ? subtasks.length : 0;
                         const progress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
                         return (
-                            <Card className="p-4 mb-4 bg-glass-light dark:bg-glass-dark backdrop-blur-md rounded-lg shadow-lg">
-
+                            <Card className="p-1 mb-4 bg-card text-card-foreground border border-glass-border backdrop-blur-md rounded-lg shadow-lg">
                             <CardBody>
                               <div className="flex justify-between items-start mb-4">
                                 <div className="flex flex-col items-start gap-2">
@@ -55,13 +54,7 @@ const Tasks = () => {
                                     value={priority}
                                     icon={<FlagIcon className="h-6 w-6 pe-1 pb-1 me-1 mb-1" />}
                                     variant="ghost"
-                                    color={
-                                      priority === 'High'
-                                        ? 'red'
-                                        : priority === 'Medium'
-                                        ? 'yellow'
-                                        : 'green'
-                                    }
+                                    className={priority === 'Medium'? 'bg-yellow-200 text-yellow-900' : priority==='Low'?'bg-green-200 text-green-900':'bg-red-200 text-red-900'}
                                   />
                                   <Typography
                                     variant="h4"
