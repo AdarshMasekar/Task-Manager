@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: 240 10% 98%;
+    --background: 230, 33%, 96%;
     --foreground: 240 10% 10%;
-    --card: 0 0% 100%;
+    --card: 221, 2%, 98%;
     --card-foreground: 240 10% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 10%;
@@ -29,13 +29,14 @@
     --chart-4: 300 60% 50%;
     --chart-5: 10 80% 50%;
     --radius: 0.5rem;
-    --glass-bg: rgba(255, 255, 255, 0.1); /* Light mode glass background */
-    --glass-border: rgba(255, 255, 255, 0.2); /* Light mode glass border */
+    --glass-bg: rgba(255, 255, 255, 0.3); /* Light mode glass background */
+    --glass-border: rgba(216, 221, 235, 0.832); /* Light mode glass border */
   }
   .dark {
-    --background: 240 10% 10%;
-    --foreground: 240 10% 98%;
-    --card: 240 10% 10%;
+    --test:    hsl(225, 29%, 13%);
+    --background: 228, 65%, 5%;
+    --foreground: 228,65%,99%;
+    --card: 225, 29%, 13%;
     --card-foreground: 240 10% 98%;
     --popover: 240 10% 10%;
     --popover-foreground: 240 10% 98%;
@@ -57,8 +58,8 @@
     --chart-3: 40 80% 50%;
     --chart-4: 300 60% 50%;
     --chart-5: 10 80% 50%;
-    --glass-bg: rgba(20, 20, 20, 0.3); /* Dark mode glass background */
-    --glass-border: rgba(255, 255, 255, 0.1); /* Dark mode glass border */
+    --glass-bg: rgba(24, 28, 43,0.5); /* Dark mode glass background */
+    --glass-border: rgba(53, 54, 56, 0.8); /* Dark mode glass border */
   }
 }
 
@@ -67,7 +68,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground px-[15%] font-sans;
   }
   input,
   textarea,
