@@ -2,13 +2,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, selectUser } from '../store/reducers/userReducer';
-import {
-    Card,
-    CardBody,
-    Typography,
-    Input,
-    Button,
-} from "@material-tailwind/react";
 import { Link } from 'react-router-dom';
 
 export default function Register() {
@@ -31,62 +24,62 @@ export default function Register() {
             password: password
         };
         dispatch(registerUser(userCredentials));
+        navigate("/signin")
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-gray-100 dark:bg-gray-900">
-               <Card className="bg-white dark:bg-secondary p-8 shadow-md w-96 rounded-2xl glassmorphic">
-                <CardBody className='-my-5'>
-                    <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">Register</Typography>
+        <div className="flex flex-col items-center justify-center min-h-[80vh] bg-background text-foreground">
+            <div className="bg-card text-card-foreground p-8 shadow-md w-96 rounded-2xl glassmorphic">
+                <div className='-my-5'>
+                    <h5 className="mb-6 text-center text-xl font-medium">Register</h5>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <Input
-                            type='text'
-                            label="First Name"
-                            color="blue"
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
-                            className="dark:bg-gray-700  dark:bg-primary"
                         />
-                        <Input
-                            type='text'
-                            label="Last Name"
-                            color="blue"
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                            className="dark:bg-gray-700  dark:bg-primary"
                         />
-                        <Input
-                            type='email'
-                            label="Email"
-                            color="blue"
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="dark:bg-gray-700  dark:bg-primary"
                         />
-                        <Input
-                            type='password'
-                            label="Password"
-                            color="blue"
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="dark:bg-gray-700  dark:bg-primary"
                         />
-                        <Button type="submit" color="blue" className="mt-4 w-full">Register</Button>
+                        <button
+                            type="submit"
+                            className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary transition-colors"
+                        >
+                            Register
+                        </button>
                     </form>
-                    <p className='text-primary mt-4 text-center'>
-                        Aleady have an Account? <Link to="/signin" className='underline'>Log In</Link>
+                    <p className='text-muted-foreground mt-4 text-center'>
+                        Already have an Account? <Link to="/signin" className='text-primary hover:underline'>Log In</Link>
                     </p>
 
-                    {error && Array.isArray(error) && error.map((err, index) => {
-                        return <Typography key={index} variant="h6" color="red" className='text-center w-full'> * {err}
-                            <br />
-                        </Typography>
-                    })}
-                     {error && typeof error === 'string' && (
-                        <Typography variant="h6" color="red" className='text-center'>* {error}</Typography>
+                    {error && Array.isArray(error) && error.map((err, index) => (
+                        <p key={index} className="text-destructive text-center">* {err}</p>
+                    ))}
+                    {error && typeof error === 'string' && (
+                        <p className="text-destructive text-center">* {error}</p>
                     )}
-                </CardBody>
-            </Card>
+                </div>
+            </div>
         </div>
     )
 }

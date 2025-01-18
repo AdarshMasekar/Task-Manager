@@ -1,23 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { updateUserAsync, selectUser, changePasswordAsync } from '../store/reducers/userReducer';
-import {
-    Card,
-    CardBody,
-    Typography,
-    Input,
-    Button,
-} from "@material-tailwind/react";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const user = useSelector(selectUser);
 
-    const [firstName, setFirstName] = useState(user.data.firstName);
-    const [lastName, setLastName] = useState(user.data.lastName);
-    const [email, setEmail] = useState(user.data.email);
+    const [firstName, setFirstName] = useState(user?.data?.firstName || '');
+    const [lastName, setLastName] = useState(user?.data?.lastName || '');
+    const [email, setEmail] = useState(user?.data?.email || '');
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,10 +16,10 @@ const Profile = () => {
     const [passwordError, setPasswordError] = useState(null);
 
     useEffect(() => {
-        if (user && user.user) {
-            setFirstName(user.user.firstName || '');
-            setLastName(user.user.lastName || '');
-            setEmail(user.user.email || '');
+        if (user && user.data) {
+            setFirstName(user.data.firstName || '');
+            setLastName(user.data.lastName || '');
+            setEmail(user.data.email || '');
         }
     }, [user]);
 
@@ -75,93 +66,89 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-900 mt-4">
-            <Card className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md w-[90%]">
-                <CardBody>
-                    <Typography variant="h5" color="blue-gray" className="mb-6 text-center dark:text-white">
-                        Profile
-                    </Typography>
+        <div className="flex items-center justify-center bg-background text-foreground mt-4">
+            <div className="bg-card text-card-foreground p-8 rounded-2xl shadow-md w-[90%] max-w-2xl glassmorphic">
+                <div>
+                    <h5 className="mb-6 text-xl font-medium text-center">Profile</h5>
                     <form className="space-y-4" onSubmit={handleUpdateProfile}>
-                        <Input
-                            type="text"
-                            label="First Name"
-                            color="blue"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                        />
-                        <Input
-                            type="text"
-                            label="Last Name"
-                            color="blue"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                        />
-                        <Input
-                            type="email"
-                            label="Email"
-                            color="blue"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                        />
-                        <Button type="submit" color="blue" className="w-full">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium">First Name</label>
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium">Last Name</label>
+                            <input
+                                type="text"
+                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium">Email</label>
+                            <input
+                                type="email"
+                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <button type="submit" className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary transition-colors">
                             Update Profile
-                        </Button>
+                        </button>
                         {updateError && (
-                            <Typography variant="small" color="red">
+                            <p className="text-sm text-red-500">
                                 {updateError}
-                            </Typography>
+                            </p>
                         )}
-                        {/* {error && Array.isArray(error) && error.map((err, index) => {
-                            return <Typography key={index} variant="small" color="red">{err}</Typography>
-                        })}
-                        {error && typeof error === 'string' && (
-                            <Typography variant="small" color="red">{error}</Typography>
-                        )} */}
                     </form>
                     <div className="mt-8">
-                        <Typography variant="h6" color="blue-gray" className="mb-4 text-center dark:text-white">
-                            Change Password
-                        </Typography>
+                        <h6 className="mb-4 text-lg font-medium text-center">Change Password</h6>
                         <form className="space-y-4" onSubmit={handleChangePassword}>
-                            <Input
-                                type="password"
-                                label="Current Password"
-                                color="blue"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                                className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                            />
-                            <Input
-                                type="password"
-                                label="New Password"
-                                color="blue"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                            />
-                            <Input
-                                type="password"
-                                label="Confirm New Password"
-                                color="blue"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white"
-                            />
-                            <Button type="submit" color="blue" className="w-full">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">Current Password</label>
+                                <input
+                                    type="password"
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={currentPassword}
+                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">New Password</label>
+                                <input
+                                    type="password"
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium">Confirm New Password</label>
+                                <input
+                                    type="password"
+                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                            </div>
+                            <button type="submit" className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary transition-colors">
                                 Change Password
-                            </Button>
+                            </button>
                             {passwordError && (
-                                <Typography variant="small" color="red">
+                                <p className="text-sm text-red-500">
                                     {passwordError}
-                                </Typography>
+                                </p>
                             )}
                         </form>
                     </div>
-                </CardBody>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 };

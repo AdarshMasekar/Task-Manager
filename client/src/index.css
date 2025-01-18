@@ -3,64 +3,78 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 230, 33%, 96%;
-    --foreground: 240 10% 10%;
-    --card: 221, 2%, 98%;
-    --card-foreground: 240 10% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
-    --primary: 220 50% 45%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 30% 90%;
-    --secondary-foreground: 240 10% 10%;
-    --muted: 220 20% 94%;
-    --muted-foreground: 220 10% 50%;
-    --accent: 220 30% 90%;
-    --accent-foreground: 240 10% 10%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 20% 92%;
-    --input: 220 20% 92%;
-    --ring: 220 50% 45%;
-    --chart-1: 160 60% 50%;
-    --chart-2: 200 60% 50%;
-    --chart-3: 40 80% 50%;
-    --chart-4: 300 60% 50%;
-    --chart-5: 10 80% 50%;
-    --radius: 0.5rem;
-    --glass-bg: rgba(255, 255, 255, 0.3); /* Light mode glass background */
-    --glass-border: rgba(216, 221, 235, 0.832); /* Light mode glass border */
+  body {
+    @apply bg-background text-foreground px-[15%] font-sans;
   }
-  .dark {
-    --test:    hsl(225, 29%, 13%);
-    --background: 228, 65%, 5%;
-    --foreground: 228,65%,99%;
-    --card: 225, 29%, 13%;
-    --card-foreground: 240 10% 98%;
-    --popover: 240 10% 10%;
-    --popover-foreground: 240 10% 98%;
-    --primary: 220 50% 75%;
-    --primary-foreground: 240 10% 10%;
-    --secondary: 220 30% 20%;
-    --secondary-foreground: 240 10% 98%;
-    --muted: 220 20% 16%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 220 30% 20%;
-    --accent-foreground: 240 10% 98%;
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 240 10% 98%;
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 220 50% 75%;
-    --chart-1: 160 60% 50%;
-    --chart-2: 200 60% 50%;
-    --chart-3: 40 80% 50%;
-    --chart-4: 300 60% 50%;
-    --chart-5: 10 80% 50%;
-    --glass-bg: rgba(24, 28, 43,0.5); /* Dark mode glass background */
-    --glass-border: rgba(53, 54, 56, 0.8); /* Dark mode glass border */
+  input, textarea, select {
+    @apply bg-input text-foreground border-border rounded-md focus:ring-ring focus:border-ring focus:outline-none;
   }
+}
+
+@layer components {
+  .glassmorphic {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+  }
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 47.4% 11.2%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 47.4% 11.2%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 47.4% 11.2%;
+  --chart-1: 160 60% 50%;
+  --chart-2: 200 60% 50%;
+  --chart-3: 40 80% 50%;
+  --chart-4: 300 60% 50%;
+  --chart-5: 10 80% 50%;
+  --glass-bg: rgba(255, 255, 255, 0.3); /* Light mode glass background */
+  --glass-border: rgba(216, 221, 235, 0.832); /* Light mode glass border */
+}
+
+.dark {
+  --background: 228, 65%, 5%;
+  --foreground: 228,65%,99%;
+  --card: 225, 29%, 13%;
+  --card-foreground: 240 10% 98%;
+  --popover: 240 10% 10%;
+  --popover-foreground: 240 10% 98%;
+  --primary: 220 50% 75%;
+  --primary-foreground: 240 10% 10%;
+  --secondary: 220 30% 20%;
+  --secondary-foreground: 240 10% 98%;
+  --muted: 220 20% 16%;
+  --muted-foreground: 220 10% 60%;
+  --accent: 220 30% 20%;
+  --accent-foreground: 240 10% 98%;
+  --destructive: 0 70% 60%;
+  --destructive-foreground: 240 10% 98%;
+  --border: 220 20% 18%;
+  --input: 220 20% 18%;
+  --ring: 220 50% 75%;
+  --chart-1: 160 60% 50%;
+  --chart-2: 200 60% 50%;
+  --chart-3: 40 80% 50%;
+  --chart-4: 300 60% 50%;
+  --chart-5: 10 80% 50%;
+  --glass-bg: rgba(24, 28, 43,0.5); /* Dark mode glass background */
+  --glass-border: rgba(53, 54, 56, 0.8); /* Dark mode glass border */
 }
 
 @layer base {
@@ -69,17 +83,11 @@
   }
   body {
     @apply bg-background text-foreground px-[15%] font-sans;
+    font-family: 'Montserrat', sans-serif;
   }
   input,
   textarea,
   select {
-      @apply dark:bg-gray-700 dark:border-gray-600 border-gray-400 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary;
+    @apply bg-input text-foreground border-border rounded-md focus:ring-ring focus:border-ring focus:outline-none;
   }
-}
-
-.glassmorphic {
-    background-color: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

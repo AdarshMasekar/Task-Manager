@@ -2,32 +2,22 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { updateTaskAsync, selectTasks } from "../store/reducers/taskReducer";
-import {
-    Card,
-    CardBody,
-    Typography,
-    Input,
-    Select,
-    Option,
-    Button,
-    Textarea
-} from "@material-tailwind/react";
 
 const EditTask = () => {
     const { taskId } = useParams();
     const { state } = useLocation();
-    const { task: initialTask } = state || { task: null };
+    const { task: initialTask } = state.task || { task: null };
     const { error } = useSelector(selectTasks);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [task, setTask] = useState(() => ({
+    const [task, setTask] = useState({
         title: "",
         description: "",
         priority: "Medium",
         subtasks: [{ title: "", status: "Pending" }],
         deadLine: "",
-    }));
+    });
 
     useEffect(() => {
         if (initialTask) {
@@ -56,6 +46,7 @@ const EditTask = () => {
             return { ...prevTask, [name]: updatedValue };
         });
     };
+
     const handleSubtaskChange = (index, field, value) => {
         const updatedSubtasks = [...task.subtasks];
         updatedSubtasks[index][field] = value;
@@ -74,117 +65,114 @@ const EditTask = () => {
         setTask({ ...task, subtasks: updatedSubtasks });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(task)
-        dispatch(updateTaskAsync({ taskId, updates: task }));
-        navigate("/");
+        try {
+            await dispatch(updateTaskAsync({ taskId, updates: task })).unwrap();
+            navigate("/");
+        } catch (err) {
+            console.error("Failed to update task:", err);
+        }
     };
 
     return (
-        <Card className="max-w-2xl mx-auto mt-8 p-6 dark:bg-gray-800 dark:border-gray-700 glassmorphic">    <CardBody>
-                <Typography variant="h4" color="blue-gray" className="text-center mb-6 dark:text-white">Edit Task</Typography>
+        <div className="max-w-2xl mx-auto mt-8 p-6 bg-card text-card-foreground rounded-2xl shadow-md glassmorphic">
+            <div className="p-4">
+                <h4 className="text-center mb-6">Edit Task</h4>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="space-y-2">
-                        <Typography variant="small" color="gray" className="font-medium dark:text-gray-300">Title</Typography>
-                        <Input
+                        <label className="font-medium">Title</label>
+                        <input
                             type="text"
                             name="title"
-                            color="blue"
-                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full p-2 rounded-md"
                             value={task.title}
                             onChange={handleChange}
                             required
                         />
                     </div>
                     <div className="space-y-2">
-                        <Typography variant="small" color="gray" className="font-medium dark:text-gray-300">Description</Typography>
-                        <Textarea
+                        <label className="font-medium">Description</label>
+                        <textarea
                             name="description"
-                            color="blue"
-                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full p-2 rounded-md"
                             value={task.description}
                             onChange={handleChange}
                             required
                         />
                     </div>
                     <div className="space-y-2">
-                        <Typography variant="small" color="gray" className="font-medium dark:text-gray-300">Priority</Typography>
-                        <Select
+                        <label className="font-medium">Priority</label>
+                        <select
                             name="priority"
-                            color="blue"
-                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full p-2 rounded-md"
                             value={task.priority}
-                            onChange={(value) =>
-                                setTask((prevTask) => ({ ...prevTask, priority: value }))
-                            }
+                            onChange={(e) => setTask((prevTask) => ({ ...prevTask, priority: e.target.value }))}
                         >
-                            <Option value="Low">Low</Option>
-                            <Option value="Medium">Medium</Option>
-                            <Option value="High">High</Option>
-                        </Select>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
                     </div>
                     <div className="space-y-2">
-                        <Typography variant="small" color="gray" className="font-medium dark:text-gray-300">Subtasks</Typography>
+                        <label className="font-medium">Subtasks</label>
                         {task.subtasks.map((subtask, index) => (
                             <div key={index} className="flex items-center space-x-2 mb-2">
-                                <Input
+                                <input
                                     type="text"
                                     placeholder="Subtask Title"
-                                    color="blue"
-                                    className="flex-1 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    className="flex-1 dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2 rounded-md"
                                     value={subtask.title}
-                                    onChange={(value) => handleSubtaskChange(index, 'title', value)}
+                                    onChange={(e) => handleSubtaskChange(index, 'title', e.target.value)}
                                     required
                                 />
-                                <Select
-                                    color="blue"
-                                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                <select
+                                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white p-2 rounded-md"
                                     value={subtask.status}
-                                    onChange={(value) => handleSubtaskChange(index, 'status', value)}
+                                    onChange={(e) => handleSubtaskChange(index, 'status', e.target.value)}
                                 >
-                                    <Option value="Pending">Pending</Option>
-                                    <Option value="Completed">Completed</Option>
-                                </Select>
-                                <Button
-                                    variant="gradient"
-                                    color="red"
+                                    <option value="Pending">Pending</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                                <button
+                                    type="button"
+                                    className="bg-destructive text-destructive-foreground px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
                                     onClick={() => removeSubtask(index)}
                                 >
                                     Remove
-                                </Button>
+                                </button>
                             </div>
                         ))}
-                        <Button
-                            variant="text"
-                            color="blue-gray"
+                        <button
+                            type="button"
+                            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
                             onClick={addSubtask}
                         >
                             Add Subtask
-                        </Button>
+                        </button>
                     </div>
                     <div className="space-y-2">
-                        <Typography variant="small" color="gray" className="font-medium dark:text-gray-300">Deadline</Typography>
-                        <Input
+                        <label className="font-medium">Deadline</label>
+                        <input
                             type="date"
                             name="deadLine"
-                            color="blue"
-                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            className="dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full p-2 rounded-md"
                             value={task.deadLine}
                             onChange={handleChange}
                             required
                         />
                     </div>
-                    <Button type="submit" color="blue" className="w-full">Update Task</Button>
-                    {error && Array.isArray(error) && error.map((err, index) => {
-                        return <Typography key={index} variant="small" color="red">{err}</Typography>
-                    })}
-                     {error && typeof error === 'string' && (
-                        <Typography variant="small" color="red">{error}</Typography>
+                    <button type="submit" className="bg-primary text-primary-foreground w-full px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">Update Task</button>
+                    {error && Array.isArray(error) && error.map((err, index) => (
+                        <p key={index} className="text-destructive">{err}</p>
+                    ))}
+                    {error && typeof error === 'string' && (
+                        <p className="text-destructive">{error}</p>
                     )}
                 </form>
-            </CardBody>
-        </Card>
+            </div>
+        </div>
     );
-}
+};
+
 export default EditTask;

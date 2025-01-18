@@ -1,11 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectUser } from '../../store/reducers/userReducer';
-import {
-    Navbar as MTNavbar,
-    Typography,
-    Button
-} from "@material-tailwind/react";
 import { logoutUser } from '../../store/reducers/userReducer';
 import { useDispatch } from 'react-redux';
 import { useContext } from 'react';
@@ -22,66 +17,47 @@ export default function Navbar() {
     };
 
     return (
-        <MTNavbar className="p-4 mx-auto flex justify-between items-center text-primary glassmorphic dark:glassmorphic mt-5 sticky top-5 z-50">
-              <Typography variant="h6" className="text-primary dark:text-white">
+        <nav className="p-4 mx-auto flex justify-between items-center text-primary glassmorphic dark:glassmorphic mt-5 sticky top-5 z-50 rounded-lg border border-gray-300 dark:border-gray-600">
+            <h6 className="text-primary dark:text-white">
                 <Link to="/" className="hover:text-blue-500">Task Manager</Link>
-            </Typography>
+            </h6>
             <div className="space-x-4 flex items-center">
                 {user?.authToken ? (
                     <>
-                        <Typography variant="h6" className="dark:text-gray-300">
+                        <h6 className="dark:text-gray-300">
                             {user?.data?.firstName} {user?.data?.lastName}
-                        </Typography>
+                        </h6>
                         <Link to="/profile">
-                            <Button
-                                variant="text"
-                                className="dark:text-gray-300 p-1"
-                            >
+                            <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
                                 Profile
-                            </Button>
+                            </button>
                         </Link>
-                        <Button
-                            variant="text"
-                            onClick={handleLogout}
-                            className="dark:text-gray-300 p-1"
-                        >
+                        <button onClick={handleLogout} className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
                             Logout
-                        </Button>
+                        </button>
                     </>
                 ) : (
                     <>
-                        <Typography variant="small" className="dark:text-gray-300">
+                        <small className="dark:text-gray-300">
                             <Link to="/signup" className="hover:text-blue-500">
-                                <Button
-                                    variant="text"
-                                    className="dark:text-gray-300 p-2"
-                                >
+                                <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
                                     Register
-                                </Button>
+                                </button>
                             </Link>
-                        </Typography>
-                        <Typography variant="small" className="dark:text-gray-300">
+                        </small>
+                        <small className="dark:text-gray-300">
                             <Link to="/signin" className="hover:text-blue-500">
-                                <Button
-                                    variant="text"
-                                    className="dark:text-gray-300 p-2"
-                                >
+                                <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
                                     Login
-                                </Button>
+                                </button>
                             </Link>
-                        </Typography>
+                        </small>
                     </>
                 )}
-                <Button
-                    variant="filled"
-                    onClick={toggleTheme}
-                    className="dark:text-gray-300 rounded-full p-1"
-                >
+                <button onClick={toggleTheme} className="dark:text-gray-300 rounded-full p-2 hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
                     {theme === 'light' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
-                </Button>
-
+                </button>
             </div>
-
-        </MTNavbar>
+        </nav>
     );
 }
