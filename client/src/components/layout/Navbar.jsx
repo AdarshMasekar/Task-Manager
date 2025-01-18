@@ -1,11 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectUser } from '../../store/reducers/userReducer';
-import { logoutUser } from '../../store/reducers/userReducer';
-import { useDispatch } from 'react-redux';
 import { useContext } from 'react';
+import { Moon, Sun, LogOut, User, CheckSquare } from 'lucide-react';
+import { selectUser, logoutUser } from '../../store/reducers/userReducer';
 import { ThemeContext } from '../../context/ThemeContext';
-import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 
 export default function Navbar() {
     const user = useSelector(selectUser);
@@ -17,47 +15,82 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="p-4 mx-auto flex justify-between items-center text-primary glassmorphic dark:glassmorphic mt-5 sticky top-5 z-50 rounded-lg border border-gray-300 dark:border-gray-600">
-            <h6 className="text-primary dark:text-white">
-                <Link to="/" className="hover:text-blue-500">Task Manager</Link>
-            </h6>
-            <div className="space-x-4 flex items-center">
-                {user?.authToken ? (
-                    <>
-                        <h6 className="dark:text-gray-300">
-                            {user?.data?.firstName} {user?.data?.lastName}
-                        </h6>
-                        <Link to="/profile">
-                            <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
-                                Profile
-                            </button>
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-3">
+            <nav className="relative mx-auto max-w-7xl">
+                <div className="backdrop-blur-md bg-white/75 dark:bg-gray-900/75 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+                    <div className="flex items-center justify-between px-4 py-3">
+                        {/* Logo and Brand */}
+                        <Link
+                            to="/"
+                            className="flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                            <CheckSquare className="h-6 w-6" />
+                            <span className="text-lg font-semibold">Task Manager</span>
                         </Link>
-                        <button onClick={handleLogout} className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <small className="dark:text-gray-300">
-                            <Link to="/signup" className="hover:text-blue-500">
-                                <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
-                                    Register
-                                </button>
-                            </Link>
-                        </small>
-                        <small className="dark:text-gray-300">
-                            <Link to="/signin" className="hover:text-blue-500">
-                                <button className="dark:text-gray-300 p-2 rounded-md hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
-                                    Login
-                                </button>
-                            </Link>
-                        </small>
-                    </>
-                )}
-                <button onClick={toggleTheme} className="dark:text-gray-300 rounded-full p-2 hover:bg-gray-700 transition-colors border border-gray-300 dark:border-gray-600">
-                    {theme === 'light' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
-                </button>
-            </div>
-        </nav>
+
+                        {/* Navigation Items */}
+                        <div className="flex items-center gap-3">
+                            {user?.authToken ? (
+                                <>
+                                    {/* User Info */}
+                                    <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-300 bg-gray-100/50 dark:bg-gray-800/50 rounded-full">
+                                        <span>{user?.data?.firstName} {user?.data?.lastName}</span>
+                                    </div>
+
+                                    {/* Profile Button */}
+                                    <Link
+                                        to="/profile"
+                                        className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 rounded-full transition-colors"
+                                    >
+                                        <User className="h-4 w-4" />
+                                        <span className="hidden sm:inline">Profile</span>
+                                    </Link>
+
+                                    {/* Logout Button */}
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 bg-rose-50 dark:bg-rose-900/30 hover:bg-rose-100 dark:hover:bg-rose-900/50 rounded-full transition-colors"
+                                    >
+                                        <LogOut className="h-4 w-4" />
+                                        <span className="hidden sm:inline">Logout</span>
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    {/* Register Button */}
+                                    <Link
+                                        to="/signup"
+                                        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 rounded-full transition-colors"
+                                    >
+                                        Register
+                                    </Link>
+
+                                    {/* Login Button */}
+                                    <Link
+                                        to="/signin"
+                                        className="flex items-center gap-2 px-4 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded-full transition-colors"
+                                    >
+                                        Login
+                                    </Link>
+                                </>
+                            )}
+
+                            {/* Theme Toggle */}
+                            <button
+                                onClick={toggleTheme}
+                                className="p-1.5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-100/80 dark:hover:bg-gray-800/80 rounded-full transition-colors"
+                                aria-label="Toggle theme"
+                            >
+                                {theme === 'light' ? (
+                                    <Moon className="h-4 w-4" />
+                                ) : (
+                                    <Sun className="h-4 w-4" />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
     );
 }
