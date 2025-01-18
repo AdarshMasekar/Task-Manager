@@ -105,10 +105,10 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = action.payload.userDetails;
-        console.log(state.data)
         state.authToken = action.payload.token;
         localStorage.setItem('userDetails',JSON.stringify(state.data))
         localStorage.setItem('token', state.authToken);
+        isRegistered = true;
         state.loading = false;
         state.error = null;
       })
@@ -146,5 +146,6 @@ const userSlice = createSlice({
 
 export const { logoutUser } = userSlice.actions;
 export const selectUser = (state) => state.user;
+export const selectIsRegistered = (state) => state.user.isRegistered;
 const userReducer = userSlice.reducer;
 export default userReducer;

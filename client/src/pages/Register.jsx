@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, selectUser } from '../store/reducers/userReducer';
+import { registerUser, selectUser,selectIsRegistered } from '../store/reducers/userReducer';
 import { Link } from 'react-router-dom';
 
 export default function Register() {
@@ -12,9 +12,10 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const registered = useSelector(selectIsRegistered);
     const {error} = useSelector(selectUser)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
 
         const userCredentials = {
@@ -23,8 +24,11 @@ export default function Register() {
             email: email,
             password: password
         };
-        dispatch(registerUser(userCredentials));
-        navigate("/signin")
+        await dispatch(registerUser(userCredentials));
+        console.log(registered)
+        if(registered){
+            navigate("/signin")
+        }
     }
 
     return (
