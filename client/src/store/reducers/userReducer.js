@@ -108,7 +108,6 @@ const userSlice = createSlice({
         state.authToken = action.payload.token;
         localStorage.setItem('userDetails',JSON.stringify(state.data))
         localStorage.setItem('token', state.authToken);
-        isRegistered = true;
         state.loading = false;
         state.error = null;
       })
