@@ -1,118 +1,143 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PencilIcon } from "@heroicons/react/24/solid";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { CalendarDaysIcon } from "@heroicons/react/24/outline";
-import { ListBulletIcon } from "@heroicons/react/24/outline";
-import { FlagIcon } from "@heroicons/react/24/outline";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { Calendar, CircleCheckBig, FlagTriangleRight, ListTodo, Pencil, Trash2, ChevronDown } from 'lucide-react';
 import { toast } from 'react-toastify';
-import { removeTaskAsync } from '../../store/reducers/taskReducer';
 import { useDispatch } from 'react-redux';
+import { removeTaskAsync } from '../../store/reducers/taskReducer';
 
-let TaskCard = ({ task }) => {
-    const dispatch = useDispatch();
-    const notify = () => toast("task deleted successfully");
+const TaskCard = React.memo(({ task }) => {
+  const dispatch = useDispatch();
+  const notify = () => toast("Task deleted successfully");
 
-    const completedSubtasks = task.subtasks ? task.subtasks.filter(task => task.status === "Completed").length : 0;
-    const totalSubtasks = task.subtasks ? task.subtasks.length : 0;
-    const progress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
+  const completedSubtasks = task.subtasks?.filter(task => task.status === "Completed").length ?? 0;
+  const totalSubtasks = task.subtasks?.length ?? 0;
+  const progress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0;
 
-    const handleDelete = (taskId) => {
-        dispatch(removeTaskAsync(taskId));
-        notify();
-    };
+  const handleDelete = (taskId) => {
+    dispatch(removeTaskAsync(taskId));
+    notify();
+  };
 
-    return (
-        <div className="bg-card text-card-foreground border border-glass-border backdrop-blur-md rounded-lg shadow-lg p-4 mb-4">
-            <div className='flex flex-col space-y-3'>
-                <div
-                    className={`w-fit rounded-md px-2 py-1 flex items-center ${
-                        task.priority === 'High' ? 'bg-red-200 text-red-900' :
-                        task.priority === 'Medium' ? 'bg-yellow-200 text-yellow-900' :
-                        'bg-green-200 text-green-900'
-                    }`}
-                >
-                    <FlagIcon className="h-5 w-5 mr-1 inline-block" />
-                    <span className="text-sm">{task.priority}</span>
-                </div>
-                <div className="dark:text-white font-bold text-xl">
-                    {task.title.length <= 15 ? task.title : `${task.title.substring(0, 15)}...`}
-                </div>
-                <div className="dark:text-gray-300 text-base mb-4">
-                    {task.description.length <= 25 ? task.description : `${task.description.substring(0, 25)}...`}
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                    <div className="progress flex gap-2 items-center">
-                        {completedSubtasks === totalSubtasks ? (
-                            <CheckIcon className="h-5 w-5 bg-green-500 rounded-full text-white p-1" />
-                        ) : (
-                            <ListBulletIcon className="h-5 w-5 text-gray-500" />
-                        )}
-                        <div className="dark:text-gray-400 text-sm">
-                            Progress
-                        </div>
-                    </div>
-                    <div className="dark:text-gray-400 text-sm">
-                        {completedSubtasks} / {totalSubtasks}
-                    </div>
-                </div>
-                <div className="relative pt-1">
-                    <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                        <div style={{ width: `${progress}%` }} className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center ${
-                            task.priority === 'High' ? 'bg-red-500' :
-                            task.priority === 'Medium' ? 'bg-yellow-500' :
-                            'bg-green-500'
-                        }`}></div>
-                    </div>
-                </div>
-                <div className="flex items-center bg-secondary rounded-md w-fit px-2 py-1 mb-2 gap-2">
-                    <CalendarDaysIcon className="h-5 w-5 text-gray-500" />
-                    <div className="dark:text-gray-400 text-sm">
-                        Due to :{' '}
-                        {new Date(task.deadLine).toLocaleDateString('en-US', {
-                            month: 'long',
-                            day: 'numeric',
-                            year: 'numeric',
-                        })}
-                    </div>
-                </div>
-                {task.subtasks && task.subtasks.length > 0 && (
-                    <div className="mt-2">
-                        <details>
-                            <summary className="cursor-pointer">Subtasks</summary>
-                            <ul className="mt-2">
-                                {task.subtasks.map((stask) => (
-                                    <li key={stask._id} className="p-0 mb-1 flex justify-between items-center">
-                                        <div className="dark:text-gray-200 text-sm">
-                                            {stask.title.length <= 15 ? stask.title : `${stask.title.substring(0, 15)}...`}
-                                        </div>
-                                        <div className={stask.status === 'Completed' ? 'bg-blue-200 text-blue-900 w-fit rounded-md px-2 py-1' : 'bg-gray-200 text-gray-900 w-fit rounded-md px-2 py-1'}>
-                                            {stask.status}
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </details>
-                    </div>
-                )}
-                <div className="action-items flex justify-between">
-                    <Link to={`/edit-task/${task._id}`} state={{ task: { task } }}>
-                        <button className="flex items-center gap-2 mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
-                            Edit
-                            <PencilIcon className="h-4 w-4" />
-                        </button>
-                    </Link>
-                    <button onClick={() => handleDelete(task._id)} className="flex items-center gap-2 mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors">
-                        Delete
-                        <TrashIcon className="h-4 w-4" />
-                    </button>
-                </div>
-            </div>
+  const priorityStyles = {
+    High: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400 ring-rose-500/20',
+    Medium: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 ring-amber-500/20',
+    Low: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 ring-emerald-500/20',
+  };
+
+  const progressBarStyles = {
+    High: 'bg-rose-500 dark:bg-rose-400',
+    Medium: 'bg-amber-500 dark:bg-amber-400',
+    Low: 'bg-emerald-500 dark:bg-emerald-400',
+  };
+
+  return (
+    <div className="group relative overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-5 border border-gray-200 dark:border-gray-800">
+      {/* Priority Badge */}
+      <div className={`absolute top-0 right-0 w-20 h-20 -translate-x-10 translate-y-[-40px] rotate-45 ${progressBarStyles[task.priority]} opacity-10`} />
+
+      <div className="flex flex-col space-y-4">
+        {/* Priority Tag */}
+        <div className={`w-fit rounded-full px-3 py-1 flex items-center gap-1.5 ring-1 ${priorityStyles[task.priority]}`}>
+          <FlagTriangleRight className="h-3.5 w-3.5" />
+          <span className="text-xs font-medium">{task.priority}</span>
         </div>
-    );
-};
 
-TaskCard = React.memo(TaskCard);
+        {/* Title & Description */}
+        <div>
+          <h3 className="font-semibold text-xl text-gray-900 dark:text-white mb-1">
+            {task.title.length <= 25 ? task.title : `${task.title.substring(0, 25)}...`}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            {task.description.length <= 35 ? task.description : `${task.description.substring(0, 35)}...`}
+          </p>
+        </div>
+
+        {/* Progress Section */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              {completedSubtasks === totalSubtasks && totalSubtasks > 0 ? (
+                <CircleCheckBig className="h-4 w-4 text-emerald-500" />
+              ) : (
+                <ListTodo className="h-4 w-4 text-gray-400" />
+              )}
+              <span className="text-sm text-gray-600 dark:text-gray-400">Progress</span>
+            </div>
+            <span className="text-sm font-medium text-gray-900 dark:text-gray-300">
+              {completedSubtasks}/{totalSubtasks}
+            </span>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div
+              style={{ width: `${progress}%` }}
+              className={`h-full rounded-full transition-all duration-300 ${progressBarStyles[task.priority]}`}
+            />
+          </div>
+        </div>
+
+        {/* Due Date */}
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+          <Calendar className="h-4 w-4" />
+          <span className="text-sm">
+            Due: {new Date(task.deadLine).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </span>
+        </div>
+
+        {/* Subtasks */}
+        {task.subtasks && task.subtasks.length > 0 && (
+          <details className="group">
+            <summary className="flex items-center gap-2 cursor-pointer list-none text-sm font-medium text-gray-600 dark:text-gray-400">
+              <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
+              Subtasks ({completedSubtasks}/{totalSubtasks})
+            </summary>
+            <ul className="mt-3 space-y-2 pl-6">
+              {task.subtasks.map((stask) => (
+                <li key={stask._id} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {stask.title.length <= 20 ? stask.title : `${stask.title.substring(0, 20)}...`}
+                  </span>
+                  <span className={`px-2 py-1 rounded-xll text-xs font-medium ${
+                    stask.status === 'Completed'
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                      : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+                  }`}>
+                    {stask.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-2">
+          <Link
+            to={`/edit-task/${task._id}`}
+            state={{ task: { task } }}
+            className="flex-1"
+          >
+            <button className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-xl transition-colors duration-200 ">
+              <Pencil className="h-4 w-4" />
+              <span>Edit</span>
+            </button>
+          </Link>
+          <button
+            onClick={() => handleDelete(task._id)}
+            className="flex-1 flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 dark:hover:bg-rose-900/50 px-4 py-2 rounded-xl transition-colors duration-200"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 export default TaskCard;
