@@ -2,7 +2,7 @@
     "name": "server",
     "version": "1.0.0",
     "description": "task manager server",
-    "main": "server.ss",
+    "main": "server.js",
     "scripts": {
         "postinstall": "npm rebuild bcrypt"
     },
