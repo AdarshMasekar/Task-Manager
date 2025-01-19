@@ -32,7 +32,7 @@ const validate = async(user,password) =>{
         if(!isValidCredentials){
             return {
                 "success":false,
-                "error":"invalid credentials!"
+                "message":"invalid credentials!"
             }
         }
 
@@ -45,7 +45,7 @@ const validate = async(user,password) =>{
     } catch (error) {
         return {
             "success":true,
-            "error":"user authentication failed!"+error
+            "message":"user authentication failed!"+error
         }
     }
 

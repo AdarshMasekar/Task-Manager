@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser, selectUser } from '../store/reducers/userReducer';
+import { registerUser, selectUser,setErrors } from '../store/reducers/userReducer';
+import { z } from 'zod';
 
 export default function Register() {
   const [firstName, setFirstName] = useState('');
@@ -15,15 +16,26 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     try{
+        const userSchema = z.object(
+            {
+                firstName:z.string().min(3,"firstName should contain atleast 3 letters"),
+                lastName:z.string().min(3,"lastName should contain atleast 3 letters"),
+                email:z.string().email(),
+                password:z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/,"Password must be at least 8 characters long and include an uppercase,a lowercase, a number, and a special character.")
+            }
+        )
+        userSchema.parse({firstName,lastName,email,password});
         dispatch(registerUser({ firstName, lastName, email, password }));
+        dispatch(setErrors([]));
         navigate("/signin");
     }catch(err){
-        console.log(err)
+        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
+        dispatch(setErrors(errorMessages));
     };
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 -mt-24">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8">
           <div className="flex flex-col items-center mb-8">
@@ -89,7 +101,7 @@ export default function Register() {
               />
             </div>
 
-            {error && (
+            {error.length > 0 && (
               <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl p-3">
                 {Array.isArray(error) ? error.map((err, index) => (
                   <p key={index} className="flex items-center gap-2">

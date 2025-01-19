@@ -1,9 +1,7 @@
 const express = require("express");
 const { createUser, validate, updateUser, changePassword } = require("../controller/userController");
-const { validateUser, validateLogin, validatePasswordChange } = require("../utils/validation");
 const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
-const User = require("../model/User");
 const signinMiddleware = require("../middleware/signinMiddleware");
 const signupMiddleware = require("../middleware/signupMiddleware");
 

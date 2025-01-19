@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, selectUser } from '../store/reducers/userReducer';
+import { loginUser, selectUser,setErrors } from '../store/reducers/userReducer';
+import {z} from 'zod';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,15 +13,29 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
-  };
+    try{
+        const userSchema = z.object(
+            {
+                email:z.string().email(),
+                password:z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/,"Password must be at least 8 characters long and include an uppercase,a lowercase, a number, and a special character.")
+            }
+        )
+        userSchema.parse({email,password});
+        dispatch(loginUser({ email, password }));
+        dispatch(setErrors([]));
+        if (authToken) {
+            navigate("/");
+        }
+    }
+    catch(err){
+        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
+        dispatch(setErrors(errorMessages));
+    };
 
-  if (authToken) {
-    navigate("/");
-  }
+}
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 -mt-28">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8">
           <div className="flex flex-col items-center mb-8">
@@ -57,9 +72,9 @@ export default function Login() {
               />
             </div>
 
-            {error && (
+            {error.length > 0 && (
               <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl p-3">
-                {Array.isArray(error) ? error.map((err, index) => (
+               {Array.isArray(error) ? error.join(',').split(',').map((err, index) => (
                   <p key={index} className="flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>

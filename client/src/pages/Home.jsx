@@ -15,7 +15,7 @@ export default function Homepage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-5xl container mx-auto mt-5">
-        <div className="bg-white dark:bg-gray-900 border dark:border-gray-800 rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 border dark:border-gray-800 rounded-xl shadow-sm p-6 mb-8">
           <div className="flex flex-row items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               Task Management
@@ -34,7 +34,7 @@ export default function Homepage() {
 
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Active Tasks
             </div>
@@ -42,7 +42,7 @@ export default function Homepage() {
               {tasks?.length || 0}
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Completed Tasks
             </div>
@@ -50,7 +50,7 @@ export default function Homepage() {
               {tasks?.filter(task => task.subtasks?.every(subtask => subtask.status === 'Completed')).length || 0}
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               Pending Tasks
             </div>

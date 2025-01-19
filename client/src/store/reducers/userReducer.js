@@ -10,7 +10,6 @@ export const registerUser = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (err) {
-        console.log(err)
       return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
@@ -25,7 +24,7 @@ export const loginUser = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message);
+      return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to login.");
     }
   }
 );
@@ -83,6 +82,10 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = [];
       localStorage.removeItem('token');
+      localStorage.removeItem('userDetails');
+    },
+    setErrors: (state, action) => {
+        state.error = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -97,8 +100,7 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.payload)
-        state.error = [action.payload];
+        state.error.push(action.payload);
       })
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -113,7 +115,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = [action.payload];
+        state.error.push(action.payload);
       })
         .addCase(updateUserAsync.pending, (state) => {
             state.loading = true;
@@ -144,6 +146,7 @@ const userSlice = createSlice({
 });
 
 export const { logoutUser } = userSlice.actions;
+export const { setErrors } = userSlice.actions;
 export const selectUser = (state) => state.user;
 export const selectIsRegistered = (state) => state.user.isRegistered;
 const userReducer = userSlice.reducer;
