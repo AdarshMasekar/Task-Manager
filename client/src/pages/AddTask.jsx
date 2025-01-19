@@ -99,7 +99,7 @@ const AddTask = () => {
                 <button
                   type="button"
                   onClick={addSubtask}
-                  className="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="inline-flex items-center text-sm bg-blue-100 hover:bg-blue-200 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-xl transition-colors duration-200"
                 >
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
@@ -185,7 +185,7 @@ const AddTask = () => {
 
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-300 hover:bg-blue-400 text-blue-900 dark:bg-blue-900/30 dark:text-blue-200 dark:hover:bg-blue-900/80 px-4 py-2 rounded-xl transition-colors duration-200"
             >
               Create Task
             </button>

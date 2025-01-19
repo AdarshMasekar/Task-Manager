@@ -14,9 +14,13 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser({ firstName, lastName, email, password }));
-    navigate("/signin");
-  };
+    try{
+        dispatch(registerUser({ firstName, lastName, email, password }));
+        navigate("/signin");
+    }catch(err){
+        console.log(err)
+    };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">

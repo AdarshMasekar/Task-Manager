@@ -109,14 +109,14 @@ const TaskCard = React.memo(({ task }) => {
             state={{ task: { task } }}
             className="flex-1"
           >
-            <button className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-xl transition-colors duration-200 ">
+            <button className="w-full flex items-center justify-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-xl transition-colors duration-200">
               <Pencil className="h-4 w-4" />
               <span>Edit</span>
             </button>
           </Link>
           <button
             onClick={() => handleDelete(task._id)}
-            className="flex-1 flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 dark:hover:bg-rose-900/50 px-4 py-2 rounded-xl transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 bg-rose-100 hover:bg-rose-200 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400 dark:hover:bg-rose-900/50 px-4 py-2 rounded-xl transition-colors duration-200"
           >
             <Trash2 className="h-4 w-4" />
             <span>Delete</span>
