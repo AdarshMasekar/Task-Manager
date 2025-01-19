@@ -31,7 +31,7 @@ const TaskCard = React.memo(({ task }) => {
   };
 
   return (
-    <div className="group relative overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-200 dark:border-gray-800">
+    <div className="group relative overflow-hidden bg-white dark:bg-gray-800/50 border dark:border-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 border-gray-200 ">
       <div className={`absolute top-0 right-0 w-20 h-20 -translate-x-10 translate-y-[-40px] rotate-45 ${progressBarStyles[task.priority]} opacity-10`} />
 
       <div className="flex flex-col space-y-4">

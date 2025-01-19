@@ -9,9 +9,9 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { error, authToken } = useSelector(selectUser);
+  const { error } = useSelector(selectUser);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
         const userSchema = z.object(
@@ -21,11 +21,9 @@ export default function Login() {
             }
         )
         userSchema.parse({email,password});
-        dispatch(loginUser({ email, password }));
+        await dispatch(loginUser({ email, password }));
         dispatch(setErrors([]));
-        if (authToken) {
             navigate("/");
-        }
     }
     catch(err){
         const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
@@ -72,7 +70,7 @@ export default function Login() {
               />
             </div>
 
-            {error.length > 0 && (
+            {error?.length > 0 && (
               <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl p-3">
                {Array.isArray(error) ? error.join(',').split(',').map((err, index) => (
                   <p key={index} className="flex items-center gap-2">
