@@ -1,8 +1,8 @@
+import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { Moon, Sun, LogOut, User, CheckSquare } from 'lucide-react';
-import { selectUser, logoutUser } from '../../store/reducers/userReducer';
+import { logoutUser, selectUser } from '../../store/reducers/userReducer';
+import { CheckSquare, Moon, Sun, LogOut, User } from 'lucide-react';
 import { ThemeContext } from '../../context/ThemeContext';
 
 export default function Navbar() {
@@ -10,13 +10,14 @@ export default function Navbar() {
     const dispatch = useDispatch();
     const { theme, toggleTheme } = useContext(ThemeContext);
 
+
     const handleLogout = () => {
         dispatch(logoutUser());
     };
 
     return (
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-3 sticky top-5 z-50">
-            <nav className="relative mx-auto max-w-7xl">
+        <div className={"w-full px-5 sm:px-6 lg:px-8 py-5 z-50 sticky top-2"}>
+            <nav className="relative mx-auto max-w-5xl">
                 <div className="backdrop-blur-md bg-white/75 dark:bg-gray-900/75 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
                     <div className="flex items-center justify-between px-4 py-3">
                         {/* Logo and Brand */}
