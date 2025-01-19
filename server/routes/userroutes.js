@@ -18,19 +18,19 @@ router.post("/signup", signupMiddleware, async (req, res) => {
 router.post("/signin", signinMiddleware, async (req, res) => {
     const { password } = req.body;
     const user = req.user;
+
     const response = await validate(user, password);
+
     if (response.success) {
-        res.status(200).json(
-            {
-             "token": response.token,
-             "userDetails": {
-                firstName:user.firstName,
-                lastName : user.lastName,
-                email : user.email,
+        res.status(200).json({
+            token: response.token,
+            userDetails: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
                 id: user._id
-             }
             }
-        );
+        });
     } else {
         res.status(400).json(response);
     }
