@@ -14,7 +14,7 @@ app.use("/api/user",UserRoutes)
 
 
 app.get("/",(req,res)=>{
-    res.json({msg:"hello"})
+    res.json({msg:"welcome to task manager backend"})
 })
 
 app.use((err,req,res,next)=>{
