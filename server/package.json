@@ -4,7 +4,6 @@
     "description": "task manager server",
     "main": "server.js",
     "scripts": {
-        "postinstall": "npm rebuild bcrypt"
     },
     "author": "",
     "license": "ISC",
