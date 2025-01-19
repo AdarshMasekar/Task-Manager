@@ -6,8 +6,8 @@
     "scripts": {
             "start": "node server.js",
             "dev": "node server.js",
-            "postinstall": "npm ci && npm rebuild bcrypt --platform=linux --arch=x64"
-    },
+            "postinstall": "npm cache clean --force && npm rebuild bcrypt --platform=linux --arch=x64 --verbose"
+        },
     "author": "",
     "license": "ISC",
     "dependencies": {
