@@ -113,7 +113,7 @@ const Profile = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                        <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
+                        <button type="submit" className="w-full px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-900 dark:bg-blue-900/50 dark:text-blue-200 dark:hover:bg-blue-900/80 rounded-xl transition-colors duration-200">
                             Update Profile
                         </button>
                         {updateError && (
@@ -161,7 +161,7 @@ const Profile = () => {
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                             </div>
-                            <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
+                            <button type="submit" className="w-full bg-blue-300 hover:bg-blue-400 text-blue-900 dark:bg-blue-900/50 dark:text-blue-200 dark:hover:bg-blue-900/80 px-4 py-2 rounded-xl transition-colors duration-200">
                                 Change Password
                             </button>
                             {passwordError && (

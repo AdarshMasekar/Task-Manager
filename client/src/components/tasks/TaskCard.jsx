@@ -122,6 +122,7 @@ const TaskCard = React.memo(({ task }) => {
             <span>Delete</span>
           </button>
         </div>
+        <Link to={`/task/${task._id}`} className="absolute inset-0 z-10"></Link>
       </div>
     </div>
   );
