@@ -2,23 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-background text-foreground px-[15%] font-sans;
-  }
-  input, textarea, select {
-    @apply bg-input text-foreground border-border rounded-md focus:ring-ring focus:border-ring focus:outline-none;
-  }
-}
-
-@layer components {
-  .glassmorphic {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(10px);
-  }
-}
-
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 47.4% 11.2%;
@@ -82,12 +65,36 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground px-[15%] font-sans;
+    @apply bg-background text-foreground  font-sans bg-gray-50 dark:bg-gray-900;
     font-family: 'Montserrat', sans-serif;
+
   }
+
   input,
   textarea,
-  select {
-    @apply bg-input text-foreground border-border rounded-md focus:ring-ring focus:border-ring focus:outline-none;
+  select,
+  button {
+    @apply bg-input text-foreground border-border focus:ring-ring focus:border-ring focus:outline-none rounded-xl;
   }
 }
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+    height: 8px; /* Height of the scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--muted); /* Color of the track */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary); /* Color of the scrollbar thumb */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-foreground); /* Color of the scrollbar thumb on hover */
+  }
