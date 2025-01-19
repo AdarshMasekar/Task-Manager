@@ -4,6 +4,7 @@
     "description": "task manager server",
     "main": "server.js",
     "scripts": {
+        "dev": "nodemon server.js"
     },
     "author": "",
     "license": "ISC",
