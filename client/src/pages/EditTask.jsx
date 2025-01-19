@@ -77,7 +77,7 @@ const EditTask = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
-            <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+            <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm">
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
                         Edit Task

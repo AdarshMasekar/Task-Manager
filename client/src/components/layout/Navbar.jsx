@@ -17,7 +17,7 @@ export default function Navbar() {
 
     return (
         <div className={"w-full px-5 sm:px-6 lg:px-8 py-5 z-50 sticky top-2"}>
-            <nav className="relative mx-auto max-w-5xl">
+            <nav className="relative mx-auto max-w-6xl">
                 <div className="backdrop-blur-md bg-white/75 dark:bg-gray-900/75 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
                     <div className="flex items-center justify-between px-4 py-3">
                         {/* Logo and Brand */}

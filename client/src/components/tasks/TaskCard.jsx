@@ -31,7 +31,7 @@ const TaskCard = React.memo(({ task }) => {
   };
 
   return (
-    <div className="group relative overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-5 border border-gray-200 dark:border-gray-800">
+    <div className="group relative overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-200 dark:border-gray-800">
       <div className={`absolute top-0 right-0 w-20 h-20 -translate-x-10 translate-y-[-40px] rotate-45 ${progressBarStyles[task.priority]} opacity-10`} />
 
       <div className="flex flex-col space-y-4">
@@ -42,10 +42,10 @@ const TaskCard = React.memo(({ task }) => {
         </div>
         <div>
           <h3 className="font-semibold text-xl text-gray-900 dark:text-white mb-1">
-            {task.title.length <= 25 ? task.title : `${task.title.substring(0, 25)}...`}
+            {task.title.length <= 30 ? task.title : `${task.title.substring(0, 25)}...`}
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm">
-            {task.description.length <= 35 ? task.description : `${task.description.substring(0, 35)}...`}
+            {task.description.length <= 50 ? task.description : `${task.description.substring(0, 35)}...`}
           </p>
         </div>
         <div className="space-y-2">
