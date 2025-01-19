@@ -5,7 +5,7 @@
     "main": "server.ss",
     "scripts": {
       "test": "jest --detectOpenHandles",
-      "postinstall": "npm rebuild bcrypt"
+      "postinstall": "chmod +x node_modules/bcrypt/node_modules/.bin/node-pre-gyp && npm rebuild bcrypt"
     },
     "author": "",
     "license": "ISC",
