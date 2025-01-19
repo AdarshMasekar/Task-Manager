@@ -19,10 +19,14 @@ const AddTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(addTaskAsync(task));
-    dispatch(fetchTasks());
-    toast.success("Task added successfully!");
-    navigate("/");
+    const response = await dispatch(addTaskAsync(task));
+    if(response.payload){
+        toast.success("Task added successfully!");
+        navigate("/");
+    }
+    else{
+        toast.error("Failed to add task!");
+    }
   };
 
   const addSubtask = () => {
@@ -92,8 +96,8 @@ const AddTask = () => {
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              <div className="flex flex-wrap items-center justify-between mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2 sm:mb-0">
                   Subtasks
                 </label>
                 <button
@@ -110,7 +114,7 @@ const AddTask = () => {
 
               <div className="space-y-3">
                 {task.subtasks.map((subtask, index) => (
-                  <div key={index} className="flex gap-2">
+                  <div key={index} className="flex flex-wrap gap-2">
                     <input
                       type="text"
                       value={subtask.title}
@@ -136,7 +140,7 @@ const AddTask = () => {
                           ),
                         })
                       }
-                      className="w-32 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+                      className="w-full sm:w-32 px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                     >
                       <option value="Pending">Pending</option>
                       <option value="Completed">Completed</option>

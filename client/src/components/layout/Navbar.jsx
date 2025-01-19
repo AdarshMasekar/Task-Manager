@@ -4,15 +4,17 @@ import { Link } from 'react-router-dom';
 import { logoutUser, selectUser } from '../../store/reducers/userReducer';
 import { CheckSquare, Moon, Sun, LogOut, User } from 'lucide-react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const { theme, toggleTheme } = useContext(ThemeContext);
+    const navigate = useNavigate();
 
-
-    const handleLogout = () => {
-        dispatch(logoutUser());
+    const handleLogout = async() => {
+        await dispatch(logoutUser());
+        navigate("/signup")
     };
 
     return (

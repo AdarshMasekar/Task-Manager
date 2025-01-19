@@ -13,7 +13,7 @@ export default function Homepage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 mx-5">
       <div className="max-w-5xl container mx-auto mt-5">
         <div className="bg-white dark:bg-gray-800 border dark:border-gray-800 rounded-xl shadow-sm p-6 mb-8">
           <div className="flex flex-row items-center justify-between">
