@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { updateUserAsync, selectUser, changePasswordAsync } from '../store/reducers/userReducer';
 
 const Profile = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = useSelector(selectUser);
 
     const [firstName, setFirstName] = useState(user?.data?.firstName || '');
@@ -66,84 +68,106 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex items-center justify-center bg-background text-foreground mt-4">
-            <div className="bg-card text-card-foreground p-8 rounded-2xl shadow-md w-[90%] max-w-2xl glassmorphic">
-                <div>
-                    <h5 className="mb-6 text-xl font-medium text-center">Profile</h5>
-                    <form className="space-y-4" onSubmit={handleUpdateProfile}>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">First Name</label>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+                        Profile
+                    </h2>
+                </div>
+                <div className="p-6">
+                    <form onSubmit={handleUpdateProfile} className="space-y-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                First Name
+                            </label>
                             <input
                                 type="text"
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                placeholder="First Name"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                             />
                         </div>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">Last Name</label>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                Last Name
+                            </label>
                             <input
                                 type="text"
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                placeholder="Last Name"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                             />
                         </div>
-                        <div className="space-y-2">
-                            <label className="block text-sm font-medium">Email</label>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                Email
+                            </label>
                             <input
                                 type="email"
-                                className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                placeholder="Email"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                        <button type="submit" className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary transition-colors">
+                        <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
                             Update Profile
                         </button>
                         {updateError && (
-                            <p className="text-sm text-red-500">
+                            <div className="text-red-500 text-sm">
                                 {updateError}
-                            </p>
+                            </div>
                         )}
                     </form>
                     <div className="mt-8">
                         <h6 className="mb-4 text-lg font-medium text-center">Change Password</h6>
-                        <form className="space-y-4" onSubmit={handleChangePassword}>
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium">Current Password</label>
+                        <form className="space-y-6" onSubmit={handleChangePassword}>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                    Current Password
+                                </label>
                                 <input
                                     type="password"
-                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Current Password"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                     value={currentPassword}
                                     onChange={(e) => setCurrentPassword(e.target.value)}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium">New Password</label>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                    New Password
+                                </label>
                                 <input
                                     type="password"
-                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="New Password"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium">Confirm New Password</label>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                                    Confirm New Password
+                                </label>
                                 <input
                                     type="password"
-                                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Confirm New Password"
+                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                             </div>
-                            <button type="submit" className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-lg hover:bg-primary transition-colors">
+                            <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
                                 Change Password
                             </button>
                             {passwordError && (
-                                <p className="text-sm text-red-500">
+                                <div className="text-red-500 text-sm">
                                     {passwordError}
-                                </p>
+                                </div>
                             )}
                         </form>
                     </div>
