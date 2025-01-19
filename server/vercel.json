@@ -1,18 +1,18 @@
 {
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node",
-      "config": {
-        "buildCommand": "npm install && chmod +x node_modules/bcrypt/node_modules/.bin/node-pre-gyp && npm rebuild bcrypt",
-        "includeFiles": ["**/*"]
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node",
+        "config": {
+          "buildCommand": "npm install && chmod +x $(npm bin)/node-pre-gyp && npm rebuild bcrypt",
+          "includeFiles": ["**/*"]
+        }
       }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/$1"
-    }
-  ]
-}
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/api/$1"
+      }
+    ]
+  }
