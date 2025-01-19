@@ -4,8 +4,9 @@
     "description": "task manager server",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
-        "dev": "node server.js"
+            "start": "node server.js",
+            "dev": "node server.js",
+            "postinstall": "npm ci && npm rebuild bcrypt --platform=linux --arch=x64"
     },
     "author": "",
     "license": "ISC",
