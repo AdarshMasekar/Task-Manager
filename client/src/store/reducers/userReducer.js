@@ -6,7 +6,7 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (userData, thunkAPI) => {
     try {
-      const response = await apiClient.post('/user/signup', userData);
+      const response = await apiClient.post('/api/user/signup', userData);
       const data = await response.data;
       return data;
     } catch (err) {
@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (userData, thunkAPI) => {
     try {
-      const response = await apiClient.post('/user/signin', userData);
+      const response = await apiClient.post('/api/user/signin', userData);
       const data = await response.data;
       return data;
     } catch (err) {
@@ -34,7 +34,7 @@ export const updateUserAsync = createAsyncThunk(
     'user/update',
     async (userData, thunkAPI) => {
         try {
-            const response = await apiClient.put('/user/update', userData, {
+            const response = await apiClient.put('/api/user/update', userData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -51,7 +51,7 @@ export const changePasswordAsync = createAsyncThunk(
     'user/changePassword',
     async (passwords, thunkAPI) => {
         try {
-            const response = await apiClient.put('/user/change-password', passwords, {
+            const response = await apiClient.put('/api/user/change-password', passwords, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
