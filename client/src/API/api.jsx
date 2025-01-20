@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create a common api for all the apis
-const baseUrl = import.meta.env.VITE_BACK_END_URL;
+const baseUrl = 'https://task-manager-backend-git-main-adarshmasekars-projects.vercel.app';
 const apiClient = axios.create({
   baseURL: baseUrl,
   headers: {
