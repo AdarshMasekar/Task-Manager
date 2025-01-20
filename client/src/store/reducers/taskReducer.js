@@ -6,7 +6,7 @@ export const fetchTasks = createAsyncThunk(
     'tasks/fetchTasks',
     async (_, thunkAPI) => {
         try {
-            const response = await apiClient.get('/tasks');
+            const response = await apiClient.get('/api/tasks');
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message);
@@ -19,7 +19,7 @@ export const addTaskAsync = createAsyncThunk(
     'tasks/addTask',
     async (taskData, thunkAPI) => {
         try {
-            const response = await apiClient.post('/tasks', taskData);
+            const response = await apiClient.post('/api/tasks', taskData);
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data);
@@ -32,7 +32,7 @@ export const updateTaskAsync = createAsyncThunk(
     'tasks/updateTask',
     async ({ taskId, updates }, thunkAPI) => {
         try {
-            const response = await apiClient.put(`/tasks/${taskId}`, updates);
+            const response = await apiClient.put(`/api/tasks/${taskId}`, updates);
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message);
@@ -45,7 +45,7 @@ export const removeTaskAsync = createAsyncThunk(
     'tasks/removeTask',
     async (taskId, thunkAPI) => {
         try {
-            const response = await apiClient.delete(`/tasks/${taskId}`);
+            const response = await apiClient.delete(`/api/tasks/${taskId}`);
             return response.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message);
