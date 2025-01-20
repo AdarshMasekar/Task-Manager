@@ -36,7 +36,7 @@ const validate = async(user,password) =>{
             }
         }
 
-        const token = 'Bearer ' + jwt.sign({userId,firstName,lastName,email},JWT_SECRET)
+        const token = 'Bearer ' + jwt.sign({userId,firstName,lastName,email},JWT_SECRET,{ expiresIn: '1h' })
         return {
             "success":true,
             "token":token
@@ -44,7 +44,7 @@ const validate = async(user,password) =>{
 
     } catch (error) {
         return {
-            "success":true,
+            "success":false,
             "message":"user authentication failed!"+error
         }
     }
