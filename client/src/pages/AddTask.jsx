@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addTaskAsync, fetchTasks, selectTasks } from "../store/reducers/taskReducer";
+import { addTaskAsync, selectTasks } from "../store/reducers/taskReducer";
 import { toast } from 'react-toastify';
 
 const AddTask = () => {

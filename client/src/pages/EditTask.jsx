@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { updateTaskAsync, selectTasks } from "../store/reducers/taskReducer";
+import { toast } from "react-toastify";
 
 const EditTask = () => {
     const { taskId } = useParams();
@@ -69,9 +70,10 @@ const EditTask = () => {
         e.preventDefault();
         try {
             await dispatch(updateTaskAsync({ taskId, updates: task })).unwrap();
+            toast.success("Task updated successfully!");
             navigate("/");
         } catch (err) {
-            console.error("Failed to update task:", err);
+            toast.error(`Failed to update task.${err} `);
         }
     };
 
@@ -199,12 +201,6 @@ const EditTask = () => {
                                 required
                             />
                         </div>
-
-                        {error && (
-                            <div className="text-red-500 text-sm">
-                                {Array.isArray(error) ? error.join(", ") : error}
-                            </div>
-                        )}
 
                         <button
                             type="submit"
