@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const {SALT_ROUNDS,JWT_SECRET} = require("../config/dotenv");
 const User = require("../model/User");
 const jwt = require("jsonwebtoken")
@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 
 const createUser = async({firstName,lastName,email,password})=>{
     try{
-        const hashedPassword = await bcrypt.hash(password,SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hashSync(password,SALT_ROUNDS);
         await User.create({firstName,lastName,email,password:hashedPassword});
         return {
             "success":true,
@@ -28,7 +28,7 @@ const validate = async(user,password) =>{
         const lastName = user.lastName;
         const email = user.email;
         const storedPassword = user.password;
-        const isValidCredentials = await bcrypt.compare(password,storedPassword)
+        const isValidCredentials = await bcrypt.compareSync(password,storedPassword)
         if(!isValidCredentials){
             return {
                 "success":false,
@@ -72,11 +72,11 @@ const changePassword = async (userId, currentPassword, newPassword) => {
         if (!user) {
             return { success: false, error: "User not found." };
         }
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        const isMatch = await bcrypt.compareSync(currentPassword, user.password);
         if (!isMatch) {
             return { success: false, error: "Invalid current password." };
         }
-        const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hashSync(newPassword, SALT_ROUNDS);
         user.password = hashedPassword;
         await user.save();
         return { success: true, message: "Password changed successfully." };
