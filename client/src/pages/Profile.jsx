@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { updateUserAsync, selectUser, changePasswordAsync } from '../store/reducers/userReducer';
+import { toast } from 'react-toastify';
+
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const user = useSelector(selectUser);
 
     const [firstName, setFirstName] = useState(user?.data?.firstName || '');
@@ -25,7 +25,7 @@ const Profile = () => {
         }
     }, [user]);
 
-    const handleUpdateProfile = (e) => {
+    const handleUpdateProfile = async(e) => {
         e.preventDefault();
         setUpdateError(null);
         if (!firstName || !lastName || !email) {
@@ -37,11 +37,13 @@ const Profile = () => {
             lastName,
             email,
         };
-        dispatch(updateUserAsync(userData))
-            .unwrap()
-            .catch((err) => {
-                setUpdateError(err || "Failed to update profile.");
-            });
+        try {
+            await dispatch(updateUserAsync(userData)).unwrap();
+            toast.success("Profile updated successfully!");
+        } catch (err) {
+            setUpdateError(err?.message || "Failed to update profile.");
+            toast.error(err?.message || "Failed to update profile.");
+        }
     };
 
     const handleChangePassword = (e) => {
@@ -108,9 +110,10 @@ const Profile = () => {
                             <input
                                 type="email"
                                 placeholder="Email"
-                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl"
+                                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent rounded-xl cursor-not-allowed"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                disabled
                             />
                         </div>
                         <button type="submit" className="w-full px-4 py-2 bg-blue-300 hover:bg-blue-400 text-blue-900 dark:bg-blue-900/50 dark:text-blue-200 dark:hover:bg-blue-900/80 rounded-xl transition-colors duration-200">

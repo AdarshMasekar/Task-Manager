@@ -5,6 +5,7 @@ import { logoutUser, selectUser } from '../../store/reducers/userReducer';
 import { CheckSquare, Moon, Sun, LogOut, User } from 'lucide-react';
 import { ThemeContext } from '../../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Navbar() {
     const user = useSelector(selectUser);
@@ -13,7 +14,8 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     const handleLogout = async() => {
-        await dispatch(logoutUser());
+        await dispatch(logoutUser()).unwrap();
+        toast("Logged out successfully!");
         navigate("/signup")
     };
 

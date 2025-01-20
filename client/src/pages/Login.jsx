@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser, selectUser,setErrors } from '../store/reducers/userReducer';
 import {z} from 'zod';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -22,12 +23,14 @@ export default function Login() {
         )
         userSchema.parse({email,password});
         await dispatch(loginUser({ email, password })).unwrap();
-        dispatch(setErrors([]));
-            navigate("/");
+        toast.success("Logged in successfully!");
+        navigate("/");
     }
     catch(err){
-        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
-        dispatch(setErrors(errorMessages));
+        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : err;
+        errorMessages.forEach(message => {
+            toast(message, { type: "error" });
+        });
     };
 
 }

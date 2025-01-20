@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser, selectUser,setErrors } from '../store/reducers/userReducer';
 import { z } from 'zod';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const [firstName, setFirstName] = useState('');
@@ -26,11 +27,13 @@ export default function Register() {
         )
         userSchema.parse({firstName,lastName,email,password});
         await dispatch(registerUser({ firstName, lastName, email, password })).unwrap();
-        dispatch(setErrors([]));
+        toast.success("Account created successfully!");
         navigate("/signin");
     }catch(err){
         const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
-        dispatch(setErrors(errorMessages));
+        errorMessages.forEach(message => {
+            toast(message, { type: "error" });
+        });
     };
   }
 
@@ -100,26 +103,6 @@ export default function Register() {
                 required
               />
             </div>
-
-            {error?.length > 0 && (
-              <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl p-3">
-                {Array.isArray(error) ? error.map((err, index) => (
-                  <p key={index} className="flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    {err}
-                  </p>
-                )) : (
-                  <p className="flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    {error}
-                  </p>
-                )}
-              </div>
-            )}
 
             <button
               type="submit"
