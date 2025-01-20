@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to login.");
+      return thunkAPI.rejectWithValue(err.response?.data?.message ? [err.response?.data?.message] : ["Failed to login.Invalid credentials!"]);
     }
   }
 );
@@ -115,7 +115,6 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error.push(action.payload);
       })
         .addCase(updateUserAsync.pending, (state) => {
             state.loading = true;
