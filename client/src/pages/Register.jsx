@@ -13,7 +13,7 @@ export default function Register() {
   const navigate = useNavigate();
   const { error } = useSelector(selectUser);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
         const userSchema = z.object(
@@ -25,7 +25,7 @@ export default function Register() {
             }
         )
         userSchema.parse({firstName,lastName,email,password});
-        dispatch(registerUser({ firstName, lastName, email, password }));
+        await dispatch(registerUser({ firstName, lastName, email, password })).unwrap();
         dispatch(setErrors([]));
         navigate("/signin");
     }catch(err){
@@ -101,7 +101,7 @@ export default function Register() {
               />
             </div>
 
-            {error.length > 0 && (
+            {error?.length > 0 && (
               <div className="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm rounded-xl p-3">
                 {Array.isArray(error) ? error.map((err, index) => (
                   <p key={index} className="flex items-center gap-2">

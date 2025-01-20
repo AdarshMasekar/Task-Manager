@@ -21,7 +21,7 @@ export default function Login() {
             }
         )
         userSchema.parse({email,password});
-        await dispatch(loginUser({ email, password }));
+        await dispatch(loginUser({ email, password })).unwrap();
         dispatch(setErrors([]));
             navigate("/");
     }
