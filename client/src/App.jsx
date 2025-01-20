@@ -7,11 +7,14 @@ import Tasks from './pages/AddTask'
 import EditTask from './pages/EditTask'
 import Profile from './pages/Profile'
 import TaskDetails from './pages/TaskDetails';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <BrowserRouter>
         <Navbar/>
+        < ToastContainer />
         <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/signup" element={<Register/>} />

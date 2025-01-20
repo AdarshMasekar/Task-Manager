@@ -50,6 +50,8 @@ const TaskDetail = () => {
         try {
             await dispatch(removeTaskAsync(taskId)).unwrap();
             toast.success("Task deleted successfully!");
+            // Fetch tasks again after deletion
+            await dispatch(fetchTasks()).unwrap();
             navigate("/");
         } catch (error) {
             console.error("Failed to delete task:", error);
