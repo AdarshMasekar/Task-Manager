@@ -6,7 +6,7 @@ const cors = require("cors");
 require('dotenv').config();
 
 app.use(cors({
-    origin: process.env.CLIENT_URL || "https://task-manager-frontend-smoky.vercel.app",
+    origin: "https://task-manager-frontend-smoky.vercel.app",
     credentials: true
 }));
 app.use(express.json());
