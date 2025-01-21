@@ -2,6 +2,11 @@
 
 Welcome to the Task Manager! This project is a RESTful API built with Node.js and Express, designed to manage tasks efficiently. It allows users to create, read, update, and delete tasks, while also providing user authentication and validation.
 
+## 🌐 Live Demo
+
+You can view the live version of the Task Manager at the following link:
+[Task Manager Live Demo](https://task-manager-frontend-smoky.vercel.app/)
+
 ## 📑 Table of Contents
 
 - [Features](#features)
