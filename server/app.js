@@ -5,10 +5,19 @@ const UserRoutes = require("./routes/userroutes");
 const cors = require("cors");
 require('dotenv').config();
 
-app.use(cors({
-    origin: "https://task-manager-frontend-smoky.vercel.app",
-    credentials: true
-}));
+// app.use(cors({
+//     origin: "https://task-manager-frontend-smoky.vercel.app",
+//     credentials: true
+// }));
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://task-manager-frontend-smoky.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 app.use(express.json());
 app.use("/api/tasks", TaskRoutes);
 app.use("/api/user", UserRoutes);
