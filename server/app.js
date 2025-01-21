@@ -7,6 +7,8 @@ require('dotenv').config();
 
 app.use(cors({
     origin: "https://task-manager-frontend-smoky.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
 
