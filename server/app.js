@@ -10,6 +10,8 @@ app.use(cors({
     credentials: true
 }));
 
+app.options('*', cors());
+
 app.use(express.json());
 app.use("/api/tasks", TaskRoutes);
 app.use("/api/user", UserRoutes);
