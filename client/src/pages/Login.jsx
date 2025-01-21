@@ -1,39 +1,39 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser, selectUser,setErrors } from '../store/reducers/userReducer';
-import {z} from 'zod';
+import { loginUser, selectUser, setErrors } from '../store/reducers/userReducer';
+import { z } from 'zod';
 import { toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // New loading state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error } = useSelector(selectUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        const userSchema = z.object(
-            {
-                email:z.string().email(),
-                password:z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/,"Password must be at least 8 characters long and include an uppercase,a lowercase, a number, and a special character.")
-            }
-        )
-        userSchema.parse({email,password});
-        await dispatch(loginUser({ email, password })).unwrap();
-        toast.success("Logged in successfully!");
-        navigate("/");
+    setLoading(true); // Set loading to true when starting login
+    try {
+      const userSchema = z.object({
+        email: z.string().email(),
+        password: z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/, "Password must be at least 8 characters long and include an uppercase, a lowercase, a number, and a special character.")
+      });
+      userSchema.parse({ email, password });
+      await dispatch(loginUser({ email, password })).unwrap();
+      toast.success("Logged in successfully!");
+      navigate("/");
+    } catch (err) {
+      const errorMessages = err.issues ? err.issues.map(issue => issue.message) : err;
+      errorMessages.forEach(message => {
+        toast(message, { type: "error" });
+      });
+    } finally {
+      setLoading(false); // Set loading to false after login attempt
     }
-    catch(err){
-        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : err;
-        errorMessages.forEach(message => {
-            toast(message, { type: "error" });
-        });
-    };
-
-}
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12 -mt-28">
@@ -75,9 +75,10 @@ export default function Login() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className={`w-full ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2.5 px-4 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900`}
+              disabled={loading} // Disable button while loading
             >
-              Sign In
+              {loading ? 'Logging in...' : 'Sign In'} {/* Conditional button text */}
             </button>
 
             <p className="text-center text-sm text-gray-600 dark:text-gray-400">

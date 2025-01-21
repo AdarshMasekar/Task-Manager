@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser, selectUser,setErrors } from '../store/reducers/userReducer';
+import { registerUser, selectUser } from '../store/reducers/userReducer';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 
@@ -10,31 +10,33 @@ export default function Register() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // New loading state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { error } = useSelector(selectUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        const userSchema = z.object(
-            {
-                firstName:z.string().min(3,"firstName should contain atleast 3 letters"),
-                lastName:z.string().min(3,"lastName should contain atleast 3 letters"),
-                email:z.string().email(),
-                password:z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/,"Password must be at least 8 characters long and include an uppercase,a lowercase, a number, and a special character.")
-            }
-        )
-        userSchema.parse({firstName,lastName,email,password});
-        await dispatch(registerUser({ firstName, lastName, email, password })).unwrap();
-        toast.success("Account created successfully!");
-        navigate("/signin");
-    }catch(err){
-        const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
-        errorMessages.forEach(message => {
-            toast(message, { type: "error" });
-        });
-    };
+    setLoading(true); // Set loading to true when starting registration
+    try {
+      const userSchema = z.object({
+        firstName: z.string().min(3, "firstName should contain at least 3 letters"),
+        lastName: z.string().min(3, "lastName should contain at least 3 letters"),
+        email: z.string().email(),
+        password: z.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&]{8,}$/, "Password must be at least 8 characters long and include an uppercase, a lowercase, a number, and a special character.")
+      });
+      userSchema.parse({ firstName, lastName, email, password });
+      await dispatch(registerUser({ firstName, lastName, email, password })).unwrap();
+      toast.success("Account created successfully!");
+      navigate("/signin");
+    } catch (err) {
+      const errorMessages = err.issues ? err.issues.map(issue => issue.message) : [err.message];
+      errorMessages.forEach(message => {
+        toast(message, { type: "error" });
+      });
+    } finally {
+      setLoading(false); // Set loading to false after registration attempt
+    }
   }
 
   return (
@@ -106,9 +108,10 @@ export default function Register() {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className={`w-full ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2.5 px-4 rounded-xl font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900`}
+              disabled={loading} // Disable button while loading
             >
-              Create Account
+              {loading ? 'Registering...' : 'Create Account'} {/* Conditional button text */}
             </button>
 
             <p className="text-center text-sm text-gray-600 dark:text-gray-400">
