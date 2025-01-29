@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create a common api for all the apis
-const baseUrl = 'https://task-manager-fmrb.onrender.com/';
+const baseUrl = 'https://task-manager-fmrb.onrender.com';
 const apiClient = axios.create({
   baseURL: baseUrl,
   headers: {
