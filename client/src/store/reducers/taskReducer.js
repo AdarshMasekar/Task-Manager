@@ -62,7 +62,11 @@ const initialState = {
 const taskSlice = createSlice({
     name: 'tasks',
     initialState,
-    reducers: {},
+    reducers: {
+        clearTasks: (state) => {
+            state.tasks = [];
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchTasks.pending, (state) => {
@@ -119,5 +123,6 @@ const taskSlice = createSlice({
 });
 
 export const selectTasks = (state) => state.tasks;
+export const { clearTasks } = taskSlice.actions;
 const taskReducer = taskSlice.reducer;
 export default taskReducer;

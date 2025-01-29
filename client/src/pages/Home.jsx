@@ -1,16 +1,23 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTasks, selectTasks } from '../store/reducers/taskReducer';
+import { fetchTasks, selectTasks, clearTasks } from '../store/reducers/taskReducer';
+import { selectUser } from '../store/reducers/userReducer';
 import TaskCard from '../components/tasks/TaskCard';
 
 export default function Homepage() {
   const { tasks } = useSelector(selectTasks);
+  const { authToken } = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTasks());
-  }, []);
+    if(authToken){
+        dispatch(fetchTasks());
+    }
+    else{
+        dispatch(clearTasks())
+    }
+  }, [dispatch, authToken]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 mx-5">

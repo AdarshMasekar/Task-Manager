@@ -130,18 +130,14 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = [action.payload];
         })
-        .addCase(changePasswordAsync.pending, (state) => {
-            state.loading = true;
+        .addCase(logoutUser, (state) => {
+            state.data = null;
+            state.authToken = null;
+            localStorage.removeItem('userDetails');
+            localStorage.removeItem('token');
+            state.isRegistered = false;
         })
-        .addCase(changePasswordAsync.fulfilled, (state) => {
-            state.loading = false;
-            state.error = null;
-        })
-        .addCase(changePasswordAsync.rejected, (state, action) => {
-            state.loading = false;
-            state.error = [action.payload];
-        });
-  }
+  },
 });
 
 export const { logoutUser } = userSlice.actions;
