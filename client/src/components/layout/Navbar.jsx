@@ -14,7 +14,7 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     const handleLogout = async() => {
-        await dispatch(logoutUser()).unwrap();
+        await dispatch(logoutUser());
         toast("Logged out successfully!");
         navigate("/signup")
     };
